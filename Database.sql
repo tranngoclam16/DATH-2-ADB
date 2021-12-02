@@ -12,9 +12,9 @@ drop database DATH#2
 
 --Table: CH_SP           
 create table CH_SP (
-   MaSP int,
+   MaSP bigint,
    MaCH varchar(8),
-   SoLuongTon           int,
+   SoLuongTon  int,
    primary key (MaSP, MaCH)
 )
 go
@@ -22,7 +22,7 @@ go
 --Table: CTDH 
 create table CTDH (
    MaDH			bigint,
-   MaSP			int,
+   MaSP			bigint,
    SoLuong		int,
    DonGia		int,
    ThanhTien	int,
@@ -33,23 +33,20 @@ go
 
 --Table: CTPD
 create table CTPD (
-   MaSPNhan				int,
    MaPD					int,
-   MaSPDoi				int,
-   SoLuongDoi           int,
+   MaSP					bigint,
+   LoaiSP				int,--1 sp đổi ,2 sp nhận
+   SoLuongDoi		    int,
    DonGiaDoi			int,
-   ThanhTienDoi         int,
-   SoLuongNhan          int,
-   DonGiaNhan           int,
-   ThanhTienNhan        int,
-   primary key (MaPD, MaSPNhan, MaSPDoi)
+   ThanhTienDoi			int,
+   primary key (MaPD, MaSP)
 )
 go
 
 --Table: CTPN 
 create table CTPN (
    MaPN		int,
-   MaSP		int,
+   MaSP		bigint,
    SoLuong  int,
    primary key (MaPN, MaSP)
 )
@@ -59,7 +56,7 @@ go
 --Table: CTPT
 create table CTPT (
    MaPT			int,
-   MaSP			int,
+   MaSP			bigint,
    SoLuong		int,
    DonGia		int,
    ThanhTien	int,
@@ -67,20 +64,14 @@ create table CTPT (
 )
 go
 
---Table: CTTinhTrangDonHang
-create table CTTinhTrangDonHang (
-   MaDH					bigint,
-   MaTT					int,
-   NgayCapNhat          datetime,
-   primary key (MaDH, MaTT)
-)
-go
-
-
 --Table: CuaHang          
 create table CuaHang (
-   MaCH                 varchar(8),
+   idCH                 int identity(1,1),
+   MaCH                 varchar(8),--MaCH='CH'+idCH
    DiaChi               nvarchar(255),
+   Phuong				nvarchar(100),
+   Quan					nvarchar(100),
+   ThanhPho				nvarchar(100),
    SDT                  varchar(10),
    NVQuanLy		        varchar(8),
    TGMoCua              int,
@@ -92,12 +83,13 @@ go
 
 --Table: DonHang          
 create table DonHang (
-   MaDH                 bigint,
+   MaDH                 bigint identity(1,1),
    MaNV                 varchar(8),
    MaCH                 varchar(8),
    MaKH 	            varchar(10),
    NgayLap              datetime,
    MaTT					int,
+   MaTinhTrang			int,
    SoThe                varchar(20),
    TongTien             int,
    ChietKhau            int,
@@ -109,7 +101,7 @@ go
 
 --Table: HDDienTu         
 create table HDDienTu (
-   So       int,
+   So       int identity(1,1),
    MaDH     bigint,
    CongTy   nvarchar(255),
    DiaChi   nvarchar(255),
@@ -136,13 +128,14 @@ create table KhachHang (
    NgaySinh datetime,
    DiaChi   nvarchar(255),
    Email    varchar(50),
+   pword    varchar (20),
    constraint PK_KHACHHANG primary key (SDT)
 )
 go
 
 --Table: LoaiHang         
 create table LoaiHang (
-   MaLoai   int,
+   MaLoai   int identity(1,1),
    MoTa     nvarchar(255),
    constraint PK_LOAIHANG primary key (MaLoai)
 )
@@ -150,7 +143,8 @@ go
 
 --Table: NhanVien         
 create table NhanVien (
-   MaNV                 varchar(8),
+   idNV					int identity (1,1),
+   MaNV                 varchar(8),--MaNV ='NV+idNV'
    MaCH                 varchar(8),
    QuanLy               varchar(8),
    HoTen                nvarchar(100),
@@ -166,10 +160,12 @@ go
 
 --Table: PhieuDoi         
 create table PhieuDoi (
-   MaPD                 int,
+   MaPD                 int identity(1,1),
    MaDH                 bigint,
    NgayLap              datetime,
-   TongChenhlLech       int,
+   TongDoi				int,
+   TongNhan				int,
+   TongChenhlLech as (TongDoi-TongNhan),
    LyDo                 nvarchar(255),
    constraint PK_PHIEUDOI primary key (MaPD)
 )
@@ -179,11 +175,14 @@ go
 
 --Table: PhieuGiaoHang    
 create table PhieuGiaoHang (
-   MaPGH                int ,
+   MaPGH                int identity(1,1),
    MaDH                 bigint,
-   NguoiNhann           varchar(50),
+   NguoiNhan            varchar(50),
    SDT                  varchar(10),
    DiaChi               nvarchar(255),
+   Phuong				nvarchar(100),
+   Quan					nvarchar(100),
+   ThanhPho				nvarchar(100),
    PhiVanChuyen         int,
    TienHang             int,
    TongThu              int,
@@ -196,7 +195,7 @@ go
 
 --Table: PhieuNhap        
 create table PhieuNhap (
-   MaPN		int,
+   MaPN		int identity(1,1),
    MaCH		varchar(8),
    NgayLap  datetime,
    constraint PK_PHIEUNHAP primary key (MaPN)
@@ -207,7 +206,7 @@ go
 
 --Table: PhieuTra        
 create table PhieuTra (
-   MaPT					int ,
+   MaPT					int identity(1,1),
    MaDH					bigint,
    NgayLap				datetime,
    TongGiaTri           int,
@@ -218,7 +217,7 @@ go
 
 --Table: SanPham          
 create table SanPham (
-   MaSP		int ,
+   MaSP		bigint identity(1,1) ,
    MaLoai   int ,
    TenSP	nvarchar(100),
    DonGia   int,
@@ -230,7 +229,7 @@ go
 
 --Table: TheThanhVien     
 create table TheThanhVien (
-   LoaiThe  int ,
+   LoaiThe  int identity(1,1),
    MoTa		nvarchar(255),
    constraint PK_THETHANHVIEN primary key (LoaiThe)
 )
@@ -238,7 +237,7 @@ go
 
 --Table: ThuongHieu      
 create table ThuongHieu (
-   MaTH					int ,
+   MaTH					int identity(1,1),
    Ten					nvarchar(255),
    MoTa					nvarchar(255),
    DiaChi				nvarchar(255),
@@ -260,9 +259,9 @@ go
 
 --Table: TinhTrangDonHang  
 create table TinhTrangDonHang (
-   MaTT int ,
+   MaTinhTrang int identity(1,1) ,
    MoTa nvarchar(255)         ,
-   constraint PK_TINHTRANGDONHANG primary key (MaTT)
+   constraint PK_TINHTRANGDONHANG primary key (MaTinhTrang)
 )
 go
 
@@ -287,7 +286,7 @@ alter table CTDH
 go
 
 alter table CTPD
-   add constraint FK_CTPD_SANPHAMDOI foreign key (MaSPDoi)
+   add constraint FK_CTPD_SANPHAMDOI foreign key (MaSP)
       references SanPham (MaSP)
 go
 
@@ -296,10 +295,6 @@ alter table CTPD
       references PhieuDoi (MaPD)
 go
 
-alter table CTPD
-   add constraint FK_CTPD_SANPHAMNHAN foreign key (MaSPNhan)
-      references SanPham (MaSP)
-go
 
 alter table CTPN
    add constraint FK_CTPN_PHIEUNHAP foreign key (MaPN)
@@ -321,15 +316,6 @@ alter table CTPT
       references SanPham (MaSP)
 go
 
-alter table CTTinhTrangDonHang
-   add constraint FK_CTTINHTR_DONHANG foreign key (MaDH)
-      references DonHang (MaDH)
-go
-
-alter table CTTinhTrangDonHang
-   add constraint FK_CTTINHTR_TINHTRDH foreign key (MaTT)
-      references TinhTrangDonHang (MaTT)
-go
 
 alter table DonHang
    add constraint FK_DONHANG_CUAHANG foreign key (MaCH)
@@ -344,6 +330,10 @@ go
 alter table DonHang
    add constraint FK_DONHANG_KHACHHANG foreign key (MaKH)
       references KhachHang (SDT)
+go
+alter table DonHang
+   add constraint FK_DONHANG_TinhTrangDonHang foreign key (MaTinhTrang)
+      references TinhTrangDonHang (MaTinhTrang)
 go
 
 alter table DonHang
@@ -421,8 +411,8 @@ insert into HinhThucThanhToan values
 (7, N'Thanh toán bằng ví điện tử')
 
 insert into TinhTrangDonHang values
-(0, N'Đơn hàng đã hủy'),
-(1, N'Đơn hàng đã đã xác nhận'),
-(2, N'Đơn hàng đang được chuẩn bị'),
-(3, N'Đơn hàng đang giao'),
-(4, N'Đơn hàng giao thành công')
+(N'Đơn hàng đã hủy'), --1
+(N'Đơn hàng đã đã xác nhận'),--2
+(N'Đơn hàng đang được chuẩn bị'),--3
+(N'Đơn hàng đang giao'),--4
+(N'Đơn hàng giao thành công')--5
