@@ -416,3 +416,8 @@ insert into TinhTrangDonHang values
 (N'Đơn hàng đang được chuẩn bị'),--3
 (N'Đơn hàng đang giao'),--4
 (N'Đơn hàng giao thành công')--5
+
+INSERT INTO TheThanhVien VALUES
+(N'Thẻ thường'),
+(N'Thẻ VIP GOLD'),
+(N'Thẻ VIP DIAMOND')
