@@ -15,7 +15,16 @@ CREATE TABLE Customer(
   PRIMARY KEY (CustomerIdentifier)
 )
 
-CREATE TABLE dbo.Order(
+CREATE TABLE Credit_Card(
+  CustomerCreditCardNumber VARCHAR(20),
+  CustomerCreditCardName NVARCHAR(100) NOT NULL,
+  CustomerIdentifier BIGINT FOREIGN KEY REFERENCES Customer(CustomerIdentifier),
+  NumberUsed INT CHECK (NumberUsed>=0),
+  PreferredOption NVARCHAR(20) CHECK (PreferredOption IN ('Yes','No'))
+  PRIMARY KEY(CustomerCreditCardNumber) 
+)
+
+CREATE TABLE Orders(
   OrderNumber BIGINT,
   CustomerTelephoneNumber VARCHAR(10) NOT NULL,
   CustomerIdentifer BIGINT NOT NULL FOREIGN KEY REFERENCES Customer(CustomerIdentifier),
@@ -30,6 +39,16 @@ CREATE TABLE dbo.Order(
   PRIMARY KEY(OrderNumber)
 )
 
+CREATE TABLE Supplier(
+  SupplierID VARCHAR(6),
+  SupplierName NVARCHAR(100) NOT NULL,
+  SupplierStreetAddress NVARCHAR(100) NOT NULL,
+  SupplierCity NVARCHAR(100) NOT NULL,
+  SupplierState NVARCHAR(100) NOT NULL,
+  SupplierZipCode VARCHAR(50) NOT NULL,
+  PRIMARY KEY(SupplierID)
+)
+
 CREATE TABLE Advertised_Item (
   ItemNumber BIGINT,
   ItemDescription NVARCHAR(255) UNIQUE,
@@ -42,19 +61,9 @@ CREATE TABLE Advertised_Item (
   PRIMARY KEY(ItemNumber)
 )
 
-CREATE TABLE Supplier(
-  SuppilerID VARCHAR(6),
-  SupplierName NVARCHAR(100) NOT NULL,
-  SupplierStreetAddress NVARCHAR(100) NOT NULL,
-  SupplierCity NVARCHAR(100) NOT NULL,
-  SupplierState NVARCHAR(100) NOT NULL,
-  SupplierZipCode VARCHAR(50) NOT NULL,
-  PRIMARY KEY(SuppilerID)
-)
-
 CREATE TABLE Ordered_Item(
   ItemNumber BIGINT,
-  OrderNumber BIGINT FOREIGN KEY REFERENCES [Order](OrderNumber),
+  OrderNumber BIGINT FOREIGN KEY REFERENCES Orders(OrderNumber),
   QuantityOrdered INT NOT NULL CHECK (QuantityOrdered>0),
   SellingPrice int,
   ShippingDate DATE,
@@ -63,30 +72,24 @@ CREATE TABLE Ordered_Item(
 
 CREATE TABLE Restock_Item(
   ItemNumber  BIGINT FOREIGN KEY REFERENCES Advertised_Item(ItemNumber),
-  SupplierID varchar(6) FOREIGN KEY REFERENCES Supplier(SuppilerID),
+  SupplierID varchar(6) FOREIGN KEY REFERENCES Supplier(SupplierID),
   SellingPrice INT CHECK (SellingPrice>0) 
   PRIMARY KEY(ItemNumber, SupplierID)
 )
 
-CREATE TABLE Credit_Card(
-  CustomerCreditCardNumber VARCHAR(20),
-  CustomerCreditCardName NVARCHAR(100) NOT NULL,
-  CustomerIdentifier BIGINT FOREIGN KEY REFERENCES Customer(CustomerIdentifier),
-  NumberUsed INT CHECK (NumberUsed>=0),
-  PreferredOption NVARCHAR(20) CHECK (PreferredOption IN ('Yes','No'))
-  PRIMARY KEY(CustomerCreditCardNumber) 
-)
 
 
 
---USE [master]
---GO
---
---IF DB_ID('Order_Entry') IS NOT NULL BEGIN
---	--ALTER DATABASE [database_name] SET SINGLE_USER WITH ROLLBACK IMMEDIATE
---	DROP DATABASE [Order_Entry]
---END
---GO
 
+/*
+USE [master]
+GO
+
+IF DB_ID('Order_Entry') IS NOT NULL BEGIN
+	--ALTER DATABASE [database_name] SET SINGLE_USER WITH ROLLBACK IMMEDIATE
+	DROP DATABASE [Order_Entry]
+END
+GO
+*/
 
              
