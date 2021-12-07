@@ -1,0 +1,92 @@
+﻿CREATE DATABASE Order_Entry
+GO
+USE Order_Entry
+GO
+CREATE TABLE Customer(
+  CustomerIdentifier BIGINT,
+  CustomerTelephoneNumber varchar(10),
+  CustomerName NVARCHAR(100),
+  CustomerStreetAddress nvarchar(100),
+  CustomerCity NVARCHAR(100),
+  CustomerState NVARCHAR(100),
+  CustomerZipCode VARCHAR(50),
+  CustomerCreditRating NVARCHAR(100),
+  PreferredCreditCard varchar(50),
+  PRIMARY KEY (CustomerIdentifier)
+)
+
+CREATE TABLE dbo.Order(
+  OrderNumber BIGINT,
+  CustomerTelephoneNumber VARCHAR(10) NOT NULL,
+  CustomerIdentifer BIGINT NOT NULL FOREIGN KEY REFERENCES Customer(CustomerIdentifier),
+  OrderDate DATE,
+  ShippingStreetAddress NVARCHAR(100) NOT NULL,
+  ShippingCity NVARCHAR(100) NOT NULL,
+  ShippingState NVARCHAR(100) NOT NULL,
+  ShippingZipCode VARCHAR(50) NOT NULL,
+  CustomerCreditCardNumber VARCHAR(20) NOT NULL FOREIGN KEY REFERENCES Credit_Card(CustomerCreditCardNumber),
+  ShippingDate DATE,
+  Total INT
+  PRIMARY KEY(OrderNumber)
+)
+
+CREATE TABLE Advertised_Item (
+  ItemNumber BIGINT,
+  ItemDescription NVARCHAR(255) UNIQUE,
+  ItemDepartment VARCHAR(10),
+  ItemWeight FLOAT CHECK(ItemWeight>0.0),
+  ItemColor NVARCHAR(50),
+  ItemPrice int CHECK (ItemPrice>0),
+  LowestPrice int CHECK (LowestPrice>0),
+  SupplierID varchar(6) FOREIGN KEY REFERENCES Supplier(SupplierID),
+  PRIMARY KEY(ItemNumber)
+)
+
+CREATE TABLE Supplier(
+  SuppilerID VARCHAR(6),
+  SupplierName NVARCHAR(100) NOT NULL,
+  SupplierStreetAddress NVARCHAR(100) NOT NULL,
+  SupplierCity NVARCHAR(100) NOT NULL,
+  SupplierState NVARCHAR(100) NOT NULL,
+  SupplierZipCode VARCHAR(50) NOT NULL,
+  PRIMARY KEY(SuppilerID)
+)
+
+CREATE TABLE Ordered_Item(
+  ItemNumber BIGINT,
+  OrderNumber BIGINT FOREIGN KEY REFERENCES [Order](OrderNumber),
+  QuantityOrdered INT NOT NULL CHECK (QuantityOrdered>0),
+  SellingPrice int,
+  ShippingDate DATE,
+  PRIMARY KEY(ItemNumber)
+)
+
+CREATE TABLE Restock_Item(
+  ItemNumber  BIGINT FOREIGN KEY REFERENCES Advertised_Item(ItemNumber),
+  SupplierID varchar(6) FOREIGN KEY REFERENCES Supplier(SuppilerID),
+  SellingPrice INT CHECK (SellingPrice>0) 
+  PRIMARY KEY(ItemNumber, SupplierID)
+)
+
+CREATE TABLE Credit_Card(
+  CustomerCreditCardNumber VARCHAR(20),
+  CustomerCreditCardName NVARCHAR(100) NOT NULL,
+  CustomerIdentifier BIGINT FOREIGN KEY REFERENCES Customer(CustomerIdentifier),
+  NumberUsed INT CHECK (NumberUsed>=0),
+  PreferredOption NVARCHAR(20) CHECK (PreferredOption IN ('Yes','No'))
+  PRIMARY KEY(CustomerCreditCardNumber) 
+)
+
+
+
+--USE [master]
+--GO
+--
+--IF DB_ID('Order_Entry') IS NOT NULL BEGIN
+--	--ALTER DATABASE [database_name] SET SINGLE_USER WITH ROLLBACK IMMEDIATE
+--	DROP DATABASE [Order_Entry]
+--END
+--GO
+
+
+             
