@@ -11,7 +11,7 @@ CREATE TABLE Customer(
   CustomerState NVARCHAR(100),
   CustomerZipCode VARCHAR(50),
   CustomerCreditRating NVARCHAR(100),
-  PreferredCreditCard varchar(50),
+  PreferredCreditCard varchar(20),
   PRIMARY KEY (CustomerIdentifier)
 )
 
@@ -20,9 +20,13 @@ CREATE TABLE Credit_Card(
   CustomerCreditCardName NVARCHAR(100) NOT NULL,
   CustomerIdentifier BIGINT FOREIGN KEY REFERENCES Customer(CustomerIdentifier),
   NumberUsed INT CHECK (NumberUsed>=0),
-  PreferredOption NVARCHAR(20) CHECK (PreferredOption IN ('Yes','No'))
+  PreferredOption VARCHAR(5) CHECK (PreferredOption IN ('Yes','No'))
   PRIMARY KEY(CustomerCreditCardNumber) 
 )
+
+ALTER TABLE Customer
+ADD CONSTRAINT FK_Customer_Preferred
+FOREIGN KEY (PreferredCreditCard) REFERENCES Credit_Card(CustomerCreditCardNumber);
 
 CREATE TABLE Orders(
   OrderNumber BIGINT,
