@@ -62,12 +62,12 @@ CREATE TABLE Advertised_Item (
 )
 
 CREATE TABLE Ordered_Item(
-  ItemNumber BIGINT,
+  ItemNumber BIGINT FOREIGN KEY REFERENCES Advertised_Item(ItemNumber),
   OrderNumber BIGINT FOREIGN KEY REFERENCES Orders(OrderNumber),
   QuantityOrdered INT NOT NULL CHECK (QuantityOrdered>0),
   SellingPrice int,
   ShippingDate DATE,
-  PRIMARY KEY(ItemNumber)
+  PRIMARY KEY(ItemNumber, OrderNumber)
 )
 
 CREATE TABLE Restock_Item(
