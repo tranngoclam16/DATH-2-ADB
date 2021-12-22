@@ -81,6 +81,15 @@ create table CuaHang (
 )
 go
 
+--Table: TinhTrangDonHang  
+create table TinhTrangDonHang (
+   MaTinhTrang int identity(1,1) ,
+   MoTa nvarchar(255)         ,
+   constraint PK_TINHTRANGDONHANG primary key (MaTinhTrang)
+)
+go
+
+
 --Table: DonHang          
 create table DonHang (
    MaDH                 bigint identity(1,1),
@@ -94,6 +103,7 @@ create table DonHang (
    TongTien             int,
    ChietKhau            int,
    LoaiDH				int, --1:offline, 2:online
+   TinhTrangDonHang		int,
    constraint PK_DONHANG primary key (MaDH)
 )
 go
@@ -122,7 +132,7 @@ go
 --Table: KhachHang        
 create table KhachHang (
    HoTen    nvarchar(100),
-   SDT      varchar(10),
+   SDT      varchar(10), --username
    LoaiThe  int,
    GioiTinh varchar(3),
    NgaySinh datetime,
@@ -257,13 +267,6 @@ create table ThuongHieu_LoaiHang (
 )
 go
 
---Table: TinhTrangDonHang  
-create table TinhTrangDonHang (
-   MaTinhTrang int identity(1,1) ,
-   MoTa nvarchar(255)         ,
-   constraint PK_TINHTRANGDONHANG primary key (MaTinhTrang)
-)
-go
 
 alter table CH_SP
    add constraint FK_CH_SP_CUAHANG foreign key (MaCH)
@@ -399,6 +402,10 @@ go
 alter table ThuongHieu_LoaiHang
    add constraint FK_THUONGHIEU_LOAIHANG2 foreign key (MaLoai)
       references LoaiHang (MaLoai)
+
+alter table DonHang
+add constraint FK_DONHANG_TTDONHANG foreign key(TinhTrangDonHang) 
+references TinhTrangDonHang(MaTinhTrang)
 go
 
 insert into HinhThucThanhToan values
