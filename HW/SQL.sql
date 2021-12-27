@@ -31,7 +31,7 @@ FOREIGN KEY (PreferredCreditCard) REFERENCES Credit_Card(CustomerCreditCardNumbe
 CREATE TABLE Orders(
   OrderNumber BIGINT,
   CustomerTelephoneNumber VARCHAR(10) NOT NULL,
-  CustomerIdentifer BIGINT NOT NULL FOREIGN KEY REFERENCES Customer(CustomerIdentifier),
+  CustomerIdentifier BIGINT NOT NULL FOREIGN KEY REFERENCES Customer(CustomerIdentifier),
   OrderDate DATE,
   ShippingStreetAddress NVARCHAR(100) NOT NULL,
   ShippingCity NVARCHAR(100) NOT NULL,
