@@ -50,11 +50,9 @@ CREATE TABLE Supplier(
   SupplierCity NVARCHAR(100) NOT NULL,
   SupplierState NVARCHAR(100) NOT NULL,
   SupplierZipCode VARCHAR(50) NOT NULL,
+  Total_Item int,
   PRIMARY KEY(SupplierID)
 )
-
-Alter table Supplier
-add Total_Item int
 
 CREATE TABLE Advertised_Item (
   ItemNumber BIGINT identity(1,1),
@@ -80,7 +78,7 @@ CREATE TABLE Ordered_Item(
 CREATE TABLE Restock_Item(
   ItemNumber  BIGINT FOREIGN KEY REFERENCES Advertised_Item(ItemNumber),
   SupplierID varchar(6) FOREIGN KEY REFERENCES Supplier(SupplierID),
-  SellingPrice INT CHECK (SellingPrice>0) 
+  PurchasePrice INT CHECK (PurchasePrice>0) 
   PRIMARY KEY(ItemNumber, SupplierID)
 )
 
