@@ -3,7 +3,7 @@ GO
 USE Order_Entry
 GO
 CREATE TABLE Customer(
-  CustomerIdentifier BIGINT,
+  CustomerIdentifier BIGINT identity(1,1),
   CustomerTelephoneNumber varchar(10),
   CustomerName NVARCHAR(100),
   CustomerStreetAddress nvarchar(100),
@@ -29,7 +29,7 @@ ADD CONSTRAINT FK_Customer_Preferred
 FOREIGN KEY (PreferredCreditCard) REFERENCES Credit_Card(CustomerCreditCardNumber);
 
 CREATE TABLE Orders(
-  OrderNumber BIGINT,
+  OrderNumber BIGINT identity(1,1),
   CustomerTelephoneNumber VARCHAR(10) NOT NULL,
   CustomerIdentifier BIGINT NOT NULL FOREIGN KEY REFERENCES Customer(CustomerIdentifier),
   OrderDate DATE,
@@ -54,7 +54,7 @@ CREATE TABLE Supplier(
 )
 
 CREATE TABLE Advertised_Item (
-  ItemNumber BIGINT,
+  ItemNumber BIGINT identity(1,1),
   ItemDescription NVARCHAR(255) UNIQUE,
   ItemDepartment VARCHAR(10),
   ItemWeight FLOAT CHECK(ItemWeight>0.0),
