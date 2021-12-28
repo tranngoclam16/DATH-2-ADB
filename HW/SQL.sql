@@ -53,6 +53,9 @@ CREATE TABLE Supplier(
   PRIMARY KEY(SupplierID)
 )
 
+Alter table Supplier
+add Total_Item int
+
 CREATE TABLE Advertised_Item (
   ItemNumber BIGINT identity(1,1),
   ItemDescription NVARCHAR(255) UNIQUE,
