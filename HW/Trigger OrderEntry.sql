@@ -30,3 +30,13 @@ begin
 end
 go
 
+create trigger TotalItem on Restock_Item
+for insert
+as
+begin
+	update Supplier
+	set Total_Item = Total_Item+1
+	from inserted i 
+	where i.SupplierID = Supplier.SupplierID
+end
+go
