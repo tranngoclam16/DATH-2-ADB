@@ -15,7 +15,7 @@ for INSERT, UPDATE, DELETE
 as
 BEGIN
 	UPDATE DonHang
-	SET TongTien = (SELECT SUM(ThanhTien)
+	SET TongTien = (SELECT SUM(CTDH.ThanhTien - CTDH.ThanhTien * DonHang.ChietKhau)
 				from CTDH
 				WHERE CTDH.MaDH = DonHang.MaDH)
 	WHERE EXISTS(SELECT * from INSERTED I WHERE I.MaDH = DonHang.MaDH)
