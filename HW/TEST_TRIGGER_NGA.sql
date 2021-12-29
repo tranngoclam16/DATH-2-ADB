@@ -1,0 +1,12 @@
+-----------TRIGGER TEST - LOWEST PRICE - SUPPLIER ID
+--SELECT * FROM Advertised_Item
+----SELECT * FROM Supplier
+----SELECT * FROM Restock_Item WHERE ItemNumber=0
+----******INSERT
+----INSERT INTO Restock_Item VALUES (0,'000020',50)
+----******UPDATE
+----UPDATE Restock_Item 
+----	SET PurchasePrice = 50 WHERE ItemNumber=0 AND SupplierID='000020'
+----******DELETE
+----DELETE FROM Restock_Item WHERE ItemNumber=0 AND SupplierID='000020'
+--SELECT * FROM Advertised_Item
