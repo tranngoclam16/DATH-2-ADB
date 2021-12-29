@@ -1,0 +1,14 @@
+--Chạy lệnh xóa hết data trước
+EXEC sp_MSForEachTable 'ALTER TABLE ? NOCHECK CONSTRAINT ALL' 
+GO 
+
+EXEC sp_MSForEachTable 'DELETE FROM ?' 
+GO 
+
+-- enable referential integrity again 
+EXEC sp_MSForEachTable 'ALTER TABLE ? WITH CHECK CHECK CONSTRAINT ALL' 
+GO
+
+
+--Chạy file trong link xong chạy UpdateData(last).sql
+https://drive.google.com/drive/u/2/folders/1oyKM7aRnDM_nZs00QBJOfe665vBKNQFo

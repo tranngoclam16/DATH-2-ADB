@@ -1,6 +1,15 @@
 ﻿use DATH#2
 GO
 
+/*
+Danh sách các procedure đã tồn tại:
+
+	Tạo tài khoản khách hàng: sp_CreateAccount_KH
+	Xem lịch sử mua hàng: xem_LichSuMuaHang_KH
+
+*/
+
+
 --Tạo tài khoản khách hàng
 CREATE PROC sp_CreateAccount_KH
 	@HoTen nvarchar(100),
@@ -27,3 +36,26 @@ BEGIN
 END;
 GO
 --DROP PROC sp_CreateAccount_KH
+
+--Xem lịch sử mua hàng
+CREATE PROCEDURE xem_LichSuMuaHang_KH
+	@sdtKH varchar(10)
+as
+BEGIN TRAN
+	if not EXISTS
+	(
+		SELECT * from KhachHang
+		WHERE KhachHang.SDT = @sdtKH
+	)
+	BEGIN
+		Raiserror('Không tồn tại Số điện thoại khách hàng này.', 16, 1)
+		ROLLBACK TRAN
+	END
+
+	else
+	BEGIN
+		SELECT * from DonHang
+		WHERE DonHang.MaKH = @sdtKH
+	END
+COMMIT TRAN
+GO
