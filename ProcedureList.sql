@@ -5,6 +5,7 @@ GO
 Danh sách các procedure đã tồn tại:
 
 	Tạo tài khoản khách hàng: sp_CreateAccount_KH
+	Xem lịch sử tích lũy: getLSTL
 	Xem lịch sử mua hàng: xem_LichSuMuaHang_KH
 
 */
@@ -36,7 +37,7 @@ BEGIN
 END;
 GO
 --DROP PROC sp_CreateAccount_KH
-
+--------------------------------------------------------------
 --Xem lịch sử mua hàng
 CREATE PROCEDURE xem_LichSuMuaHang_KH
 	@sdtKH varchar(10)
@@ -59,3 +60,20 @@ BEGIN TRAN
 	END
 COMMIT TRAN
 GO
+-----------------------------------------------------------------------
+--Xem lịch sử tích lũy
+create procedure getLSTL
+	(@start int,@bd date,@kt date,@makh varchar(10), @num int, @tong int output)
+as
+begin
+	select @tong = count(DH.MaDH) 
+	from DonHang DH 
+	where DH.MaKH=@makh 
+	and DH.NgayLap>=@bd and DH.NgayLap<=@kt
+
+	SELECT * 
+	FROM (SELECT ROW_NUMBER() OVER (ORDER BY DH.MaDH) AS ROWNUMBER,DH.MaDH, convert(varchar, NgayLap, 113) as NgayLap, TongTien, LoaiDH,TichLuy
+         FROM DonHang DH 
+		where DH.MaKH=@makh and DH.NgayLap>=@bd and DH.NgayLap<=@kt )  AS T 
+	WHERE T.ROWNUMBER >= @start AND T.ROWNUMBER < (@start+@num)
+end

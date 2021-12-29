@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch sử tích lũy</title>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/LichSuTichLuy.css">
+  <script src="../js/LichSuTichLuy.js"></script>
+  <script>
+    var currentPage = 0;
+    var bd;
+    var kt;
+    let user = JSON.parse(sessionStorage.user)
+    function goToPage(value){
+          currentPage += value;
+          fetchTable(currentPage*100,bd,kt,user.SDT)
+    }
+  </script>
+</head>
+
+<style>
+  .tableFixHeight {
+    overflow-y: auto;
+    height: 690px;
+  }
+  .tableFixHeight thead th {
+    position: sticky;
+    top: 0;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  th,
+  td {
+    border: 1px solid #ccc;
+  }
+  th {
+    background: #eee;
+  }
+</style>
+<body style="display:block;background-color: rgb(255, 240, 243);">
+    <br>
+    <div class="overlay-panel">
+        <form id="login_form">
+          <h2>Lịch sử tích lũy</h2>
+          <br><br>
+          <input id="NgayBatDau" type="date" placeholder="Ngày bắt đầu" />
+          <input id="NgayKetThuc" type="date" placeholder="Ngày kết thúc" />
+          <input id="submit" class="but" type="button" value="Xem">
+        </form>
+    </div>
+    <br><br>
+  <div class="container">
+    <div class="card">
+        <div class="card-header p-4" style="background-color: #f07585;">
+            <h3>Danh sách đơn hàng</h3>
+        </div>  
+        <div class="card-body">
+            <div class="table-responsive-sm">
+                <table class="table table-striped" style="background: #fae8ea;">
+                    <thead>
+                        <tr>
+                          <th class="text-center" scope="col">#</th>
+                          <th scope="col">Mã đơn hàng</th>
+                          <th scope="col">Ngày lập</th>
+                          <th scope="col">Tổng Tiền</th>
+                          <th scope="col">Loại đơn hàng</th>
+                          <th scope="col">Tích Lũy</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listBill"></tbody>
+                </table>
+            </div>
+          </div>
+            <div class="card-footer text-muted">
+              <span style="float: right; padding-left: 50px" id="currentPage" ></span>
+              <Button class="but" onClick="goToPage(1)"style="float: right">Trang kế</Button>
+              <Button class="but" onClick="goToPage(-1)" style="float: left" >Trang trước</Button>
+            </div>
+    </div>
+</div>
+
+<script>
+    submit.addEventListener('click', function() {
+      bd=$('#NgayBatDau').val()
+      kt=$('#NgayKetThuc').val()
+      let user = JSON.parse(sessionStorage.user)
+      fetchTable(0,bd,kt,user.SDT);
+    });
+</script>
+
+
+
+<script id="entry-template" type="text/x-handlebars-template">
+  {{#each this}}
+  <tr>
+      <th scope="row">{{ROWNUMBER}}</th>
+      <td>{{MaDH}}</td>
+      <td>{{NgayLap}}</td>
+      <td>{{TongTien}}</td>
+      <td>{{LoaiDH}}</td>
+      <td>{{TichLuy}}</td>
+  </tr>
+  </div>
+  {{/each}}
+</script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.1/handlebars.min.js"></script>
+<br><br><br>
+</body>
+<footer>
+    <p>
+      Created with <i class="fa fa-heart"></i> by
+      <a target="_blank" href="#">VyLamNgaTruc</a>
+      - Enjoy Shopping
+    </p>
+  </footer>
+</html>

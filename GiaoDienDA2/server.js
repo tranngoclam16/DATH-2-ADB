@@ -135,3 +135,24 @@ app.post('/detailBill', (req,res)=>{
         res.json(result);
     })
  })
+
+ //Lich su tich luy
+app.get('/LSTL', (req, res) => {
+    res.sendFile(path.join(staticPath,"LichSuTichLuy.html"));
+})
+
+app.post('/LSTL', (req, res) => {
+    let start = (req.body['start'])
+    let bd = (req.body['StartDate'])
+    let kt = (req.body['EndDate'])
+    let makh = (req.body['SDT'])
+    //res.json(start)
+    if (!start || start<0)
+    {
+        start = 0
+    }
+    dboperator.getLSTL(start,bd,kt,makh).then(result => {
+        console.log(result)
+        res.json(result);
+    })
+})

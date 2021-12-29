@@ -1,7 +1,7 @@
 @import "login.css";
 
 .card{
-    background-color: #fff6f6;
+    background-color: #fffafa;
     border-radius: 10px;
     box-shadow: 0 5px 5px rgba(0,0,0,0.25), 
       0 10px 10px rgba(0,0,0,0.22);
@@ -17,4 +17,20 @@ span {
 }
 .table{
   text-align: center;
+}
+
+.but{
+  border-radius: 20px;
+  border: 1px solid #f07585;
+  background-color: #FFFFFF;
+  color: #f07585;
+  font-size: 12px;
+  font-weight: bold;
+  margin: 0;
+  text-transform: uppercase;
+  transition: transform 80ms ease-in;
+}
+.but:hover{
+  background-color: #f07585;
+  color: #fdeff1;
 }

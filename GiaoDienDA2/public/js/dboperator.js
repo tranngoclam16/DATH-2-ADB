@@ -79,10 +79,30 @@ async function getDetailBill(MaDH){
         console.log(error);
     }
 } 
+
+async function getLSTL(start,bd,kt,MaKH, num=100){
+    //console.log('dboperator ', MaKH)
+    try{
+        let pool=await sql.connect(config);
+        let bills=await pool.request()
+        .input('start', sql.Int, start)
+        .input('bd', sql.Date, bd)
+        .input('kt', sql.Date, kt)
+        .input('makh', sql.VarChar(10), MaKH)
+        .input('num', sql.Int, num)
+        .output('Tong', sql.Int)
+        .execute("getLSTL")
+        return {tableLength: bills.output.Tong, data: bills.recordset};
+    }
+    catch(error){
+        return error;
+    }
+}
 module.exports={
     getKH:getKH,
     addCustomer:addCustomer,
     getCustomerBillList:getCustomerBillList,
     getDetailBill:getDetailBill,
-    getBill:getBill
+    getBill:getBill,
+    getLSTL:getLSTL
 }
