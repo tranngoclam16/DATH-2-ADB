@@ -229,7 +229,8 @@ go
 create table SanPham (
    MaSP		bigint identity(1,1) ,
    MaLoai   int ,
-   TenSP	nvarchar(100),
+   MaTH		int,
+   TenSP	nvarchar(100) ,
    DonGia   int,
    GiamGia  int,
    SLDaBan  int,
@@ -260,12 +261,12 @@ go
 
 
 --Table: ThuongHieu_LoaiHang
-create table ThuongHieu_LoaiHang (
+/*create table ThuongHieu_LoaiHang (
    MaTH		int ,
    MaLoai   int ,
    constraint PK_THUONGHIEU_LOAIHANG primary key (MaTH, MaLoai)
 )
-go
+go*/
 
 
 alter table CH_SP
@@ -394,7 +395,12 @@ alter table SanPham
       references LoaiHang (MaLoai)
 go
 
-alter table ThuongHieu_LoaiHang
+alter table SanPham
+   add constraint FK_SANPHAM_THUONGHIEU foreign key (MaTH)
+      references ThuongHieu (MaTH)
+go
+
+/*alter table ThuongHieu_LoaiHang
    add constraint FK_THUONGHIEU_LOAIHANG1 foreign key (MaTH)
       references ThuongHieu (MaTH)
 go
@@ -402,7 +408,7 @@ go
 alter table ThuongHieu_LoaiHang
    add constraint FK_THUONGHIEU_LOAIHANG2 foreign key (MaLoai)
       references LoaiHang (MaLoai)
-
+*/
 
 
 insert into HinhThucThanhToan values
