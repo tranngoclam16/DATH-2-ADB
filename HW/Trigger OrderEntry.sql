@@ -101,4 +101,17 @@ BEGIN
 			DROP TABLE ##tempAIforDELETE
 		END
 END 
+GO
 
+CREATE TRIGGER Total_Order on Ordered_Item
+for INSERT, UPDATE, DELETE
+as
+BEGIN
+	UPDATE Orders
+	SET Total = (SELECT SUM(QuantityOrdered * SellingPrice)
+				from Ordered_Item
+				WHERE Ordered_Item.OrderNumber = Orders.OrderNumber)
+	WHERE EXISTS(SELECT * from INSERTED I WHERE I.OrderNumber = Orders.OrderNumber)
+	or EXISTS(SELECT * from DELETED D WHERE D.OrderNumber = Orders.OrderNumber)
+END
+GO
