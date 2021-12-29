@@ -28,6 +28,27 @@ h1 {
 h2 {
   text-align: center;
 }
+h3{
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+
+h4{
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+h5{
+  font-size: 1rem;
+  font-weight: 400;
+  color: #1d1d1d;
+}
+
+h6{
+  color: #443f3f;
+  font-size: 1rem;
+  font-weight: 400;
+}
 
 p {
   font-size: 14px;
@@ -50,8 +71,8 @@ a {
 
 button {
   border-radius: 20px;
-  border: 1px solid #FF4B2B;
-  background-color: #FF4B2B;
+  border: 1px solid #f07585;
+  background-color: #f07585;
   color: #FFFFFF;
   font-size: 12px;
   font-weight: bold;
@@ -179,9 +200,6 @@ input {
 
 .overlay {
   background: #f15865;
-  /*background: -webkit-linear-gradient(to right, #f15865, #f7a4b6);
-  background: linear-gradient(to right, #f15865, #f7a4b6);*/
-
   background: -webkit-linear-gradient(to right, #f15865, #f7a4b6);
   background: linear-gradient(to right, #f15865, #f7a4b6);
   background-repeat: no-repeat;

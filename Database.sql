@@ -103,7 +103,7 @@ create table DonHang (
    TongTien             int,
    ChietKhau            int,
    LoaiDH				int, --1:offline, 2:online
-   TinhTrangDonHang		int,
+	TichLuy				int,
    constraint PK_DONHANG primary key (MaDH)
 )
 go
@@ -403,10 +403,7 @@ alter table ThuongHieu_LoaiHang
    add constraint FK_THUONGHIEU_LOAIHANG2 foreign key (MaLoai)
       references LoaiHang (MaLoai)
 
-alter table DonHang
-add constraint FK_DONHANG_TTDONHANG foreign key(TinhTrangDonHang) 
-references TinhTrangDonHang(MaTinhTrang)
-go
+
 
 insert into HinhThucThanhToan values
 (1, N'Thanh toán khi nhận hàng'),
