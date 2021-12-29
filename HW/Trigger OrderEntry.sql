@@ -30,6 +30,18 @@ begin
 end
 go
 
+
+create trigger TotalItem on Restock_Item
+for insert
+as
+begin
+	update Supplier
+	set Total_Item = Total_Item+1
+	from inserted i 
+	where i.SupplierID = Supplier.SupplierID
+end
+go
+
 CREATE TRIGGER lowest_price_supplier_id
 ON Restock_Item
 FOR INSERT, UPDATE, DELETE
@@ -115,3 +127,4 @@ BEGIN
 	or EXISTS(SELECT * from DELETED D WHERE D.OrderNumber = Orders.OrderNumber)
 END
 GO
+

@@ -2,6 +2,10 @@
 GO
 USE Order_Entry
 GO
+/*
+use Master
+drop database Order_Entry
+*/
 CREATE TABLE Customer(
   CustomerIdentifier BIGINT identity(1,1),
   CustomerTelephoneNumber varchar(10),
