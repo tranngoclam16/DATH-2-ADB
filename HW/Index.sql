@@ -1,4 +1,6 @@
 ﻿--INDEX
+USE [Order_Entry]
+GO
 
 -----TRUY VẤN 3
 --SELECT Customer.*,Credit_Card.CustomerCreditCardNumber,Credit_Card.CustomerCreditCardName ,Credit_Card.NumberUsed							
