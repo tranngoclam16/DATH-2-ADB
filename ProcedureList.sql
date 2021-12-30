@@ -82,25 +82,32 @@ GO
 ------------------------------------------------------------------------------
 --Thống kê doanh thu đã bán theo ngày, số lượng đã bán, số lượng tồn
 create procedure getStoreStatisticByDay
+	@start int,
+	@num int, 
 	@bd date,
 	@kt date,
 	@mach varchar(8),
 	@doanhthu float output,
-	@sldaban int output
+	@sldaban int output,
+	@tong int output
 as
 BEGIN
 	select @doanhthu= (select sum(DH.TongTien) from DonHang DH where DH.MaCH=@mach and DH.NgayLap>=@bd and DH.NgayLap<=@kt)
 	select @sldaban= (select sum(CTDH.SoLuong) FROM DonHang DH join CTDH on DH.MaDH= CTDH.MaDH
 						where DH.MaCH= @mach and DH.NgayLap>=@bd and DH.NgayLap<=@kt)
 
-	select CH_SP.MaCH,CH_SP.MaSP, CH_SP.TenSP,T.sldb,CH_SP.SoLuongTon
-	from CH_SP 
-	LEFT join (select CTDH.MaSP,sum(CTDH.SoLuong) as 'sldb'
+	select @tong=count(*) 
+	from CH_SP where CH_SP.MaCH=@mach
+	SELECT * 
+	FROM (SELECT ROW_NUMBER() OVER (ORDER BY (T.sldb) DESC) AS ROWNUMBER,CH_SP.MaCH,CH_SP.MaSP, CH_SP.TenSP,T.sldb,CH_SP.SoLuongTon
+         FROM CH_SP 
+		LEFT join (select CTDH.MaSP,sum(CTDH.SoLuong) as 'sldb'
 					FROM DonHang DH join CTDH on DH.MaDH= CTDH.MaDH
 					where DH.MaCH=@mach and DH.NgayLap>=@bd and DH.NgayLap<=@kt 
 					group by (CTDH.MaSP)) AS T
 	on T.MaSP=CH_SP.MaSP
-	where CH_SP.MaCH=@mach
+	where CH_SP.MaCH=@mach )  AS U 
+	WHERE U.ROWNUMBER >= @start AND U.ROWNUMBER < (@start+@num)
 END
 GO
 --DROP PROC getStoreStatisticByDay
@@ -140,3 +147,60 @@ begin
 end
 GO
 --DROP PROC getTKSLTAll
+------------------------------------------------------------------------------
+--Thống kê doanh thu đã bán theo ngày, số lượng đã bán, số lượng tồn
+create procedure getStoreStatisticALL
+	@bd date,
+	@kt date,
+	@doanhthu float output,
+	@sldaban int output
+as
+BEGIN
+	select @doanhthu= (select sum(DH.TongTien) from DonHang DH where DH.NgayLap>=@bd and DH.NgayLap<=@kt)
+	select @sldaban= (select sum(CTDH.SoLuong) FROM DonHang DH join CTDH on DH.MaDH= CTDH.MaDH
+						where DH.NgayLap>=@bd and DH.NgayLap<=@kt)
+
+	select CuaHang.MaCH,CuaHang.DiaChi,CuaHang.Phuong,CuaHang.Quan,CuaHang.ThanhPho,
+			CuaHang.ThanhPho,CuaHang.SDT,CuaHang.NVQuanLy,T.DoanhThu
+	from CuaHang
+	LEFT join (select DH.MaCH,sum(DH.TongTien) AS 'DoanhThu'
+					FROM DonHang DH 
+					where DH.NgayLap>=@bd and DH.NgayLap<=@kt 
+					group by (DH.MaCH)) AS T
+	on T.MaCH= CuaHang.MaCH
+END
+GO
+--DROP PROC getStoreStatisticALL
+------------------------------------------------------------------------------
+--Doanh Thu Nhân Viên
+create procedure getDTNV
+	@bd date,
+	@kt date
+as
+BEGIN
+	select NhanVien.MaNV,NhanVien.MaCH,NhanVien.QuanLy,NhanVien.HoTen, NhanVien.CMND, SDT, 
+	convert(varchar, NgaySinh, 113) as NgaySinh, convert(varchar, NgayVaoLam, 113) as NgayVaoLam,
+	T.DoanhThu
+	from NhanVien
+	LEFT join (select DH.MaNV,sum(DH.TongTien) AS 'DoanhThu'
+					FROM DonHang DH 
+					where DH.NgayLap>=@bd and DH.NgayLap<=@kt 
+					group by (DH.MaNV)) AS T
+	on T.MaNV= NhanVien.MaNV
+END
+GO
+--DROP PROC getDTNV
+------------------------------------------------------------------------------
+--Thêm sản phẩm
+create procedure addProduct
+	@maloai int,
+	@math int,
+	@tensp nvarchar(100),
+	@dongia int,
+	@giamgia int
+as
+BEGIN
+	insert into SanPham values (@maloai,@math,@tensp,@dongia,@giamgia,0)
+END
+GO
+--DROP PROC addProduct

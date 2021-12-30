@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head >
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Thêm Sản Phẩm</title>
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" href="../css/TKDT.css">
+  <script src="../js/AddProduct.js"></script>
+  <br><br>
+  <nav class="navbar"></nav>
+  <script src="../js/nav_admin.js"></script>
+  <script>
+    var currentPage = 0;
+    function goToPage(value){
+             currentPage += value;
+             fetchTable(currentPage*100);            
+    }
+    goToPage(0)
+</script>
+</head>
+<style>
+   input{
+       width: 100%;
+   }
+   .tableFixHeight {
+        overflow-y: auto;
+        height: 500px;
+      }
+      .tableFixHeight thead th {
+        position: sticky;
+        top: 0;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      th,
+      td {
+        padding: 8px 16px;
+        border: 1px solid #ccc;
+      }
+      th {
+        background: #eee;
+      }
+</style>
+<body style="display: block; background: #f3eced;">
+    <div id="main">
+   <div class="float-left"style="width:25%;">
+        <div class="card">
+            <div class="card-header p-4">
+                <h2>Thêm Sản Phẩm</h2>
+            </div> 
+            <div class="card-body">
+                <form style="width:100%;">
+                    <input  id="TenSPp" type="text" placeholder="Tên sản phẩm" />
+                    <input id="MaLoai" type="text" placeholder="Mã Loại" />
+                    <input id="MaTH" type="text" placeholder="Mã Thương Hiệu" />
+                    <input id="DonGia" type="text" placeholder="Đơn Gía" />
+                    <input id="GiaGiam" type="text" placeholder="Giảm giá" />
+                </form>
+            </div>
+            <div class="card-footer text-muted">
+                <a id="btnSaveAdd" class="but" href="javascript:;" role="button">
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                        Lưu
+                </a>
+            </div>
+        </div>
+</div>
+
+   <div class="float-right" style="width:70%;">
+        <div class="card" >
+            <div class="card-header p-4">
+                <h2>Danh Sách Sản Phẩm</h2>
+            </div> 
+            <div class="card-body">
+                <div class="tableFixHeight">
+                    <table class="table table-striped" style="float: left;background: #fae8ea;">
+                      <thead>
+                        <tr>
+                          <th class="text-center" scope="col">#</th>
+                            <th scope="col">Mã sản phẩm</th>
+                            <th scope="col">Mã loại</th>
+                            <th scope="col">Mã thương hiệu</th>
+                            <th scope="col">Tên sản phẩm</th>
+                            <th scope="col">Đơn Gía</th>
+                            <th scope="col">Giảm giá</th>
+                            <th scope="col">Số lượng đã bán</th>
+                        </tr>
+                      </thead>
+                        <tbody id="listProduct"></tbody>
+                    </table>
+                  </div>
+            </div>
+            <div class="card-footer text-muted">
+                <span style="float: right; padding-left: 50px" id="currentPage" ></span>
+                  <Button onClick="goToPage(1)"  style="float: right">Trang kế</Button>
+                  <Button onClick="goToPage(-1)" style="float: left" >Trang trước</Button>
+            </div>
+        </div>
+  </div>
+  <div class="float-left"style="width:25%;">
+    <br><br>
+    <div class="card">
+        <div class="card-header p-4">
+            <h2>Cửa hàng - Sản Phẩm</h2>
+        </div> 
+        <div class="card-body">
+            <form style="width:100%;">
+                <input  id="MaCH" type="text" placeholder="Mã cửa hàng" />
+                <input id="MaSP1" type="text" placeholder="Mã sản phẩm" />
+                <input  id="SLTon" type="text" placeholder="Số lượng tồn" />
+            </form>
+        </div>
+        <div class="card-footer text-muted">
+            <a id="btnSave" class="but" href="javascript:;" role="button">
+                <i class="fa fa-check" aria-hidden="true"></i>
+                    Lưu
+            </a>
+        </div>
+    </div>
+</div>
+</div>
+
+<script id="entry-template" type="text/x-handlebars-template">
+    {{#each this}}
+    <tr>
+        <th scope="row">{{ROWNUMBER}}</th>
+        <td>{{MaSP}}</td>
+        <td>{{MaLoai}}</td>
+        <td>{{MaTH}}</td>
+        <td>{{TenSP}}</td>
+        <td>{{DonGia}}</td>
+        <td>{{GiamGia}}</td>
+        <td>{{SLDaBan}}</td>
+    </tr>
+    </div>
+    {{/each}}
+  </script>
+  <script>
+    btnSaveAdd.addEventListener('click',() => {
+    let objToPost = { 
+        TenSP: $('#TenSPp').val(),
+        MaLoai: $('#MaLoai').val(),
+        MaTH: $('#MaTH').val(),
+        DonGia: $('#DonGia').val(),
+        GiaGiam: $('#GiaGiam').val()
+    }
+    console.log("1:",objToPost)
+    senData('http://localhost:3000/AddProduct_add', objToPost)
+    alert('Thêm sản phẩm thành công.')
+    window.location='http://localhost:3000/AddProduct'
+})
+
+btnSave.addEventListener('click',() => {
+    let objToPost = { 
+        MaCH: $('#MaCH').val(),
+        MaSP: $('#MaSP1').val(),
+        SoLuongTon: $('#SLTon').val(),
+    }
+    console.log(objToPost)
+    senData('http://localhost:3000/AddProduct_addCH', objToPost)
+    alert('Thành công.')
+    window.location='http://localhost:3000/AddProduct'
+})
+
+
+const senData = (path, data) => {
+    fetch(path, {
+        method: 'post',
+        headers: new Headers({'Content-Type': 'application/json'}),
+        body: JSON.stringify(data)
+    })
+    .then (response => {
+        console.log(response)
+        processData(response)
+    }).catch((res) =>{
+        console.log("error");
+    });
+}
+
+const processData = (data)=> {
+    if(data.alert){
+        alert(data.alert)
+    }
+}
+  </script>
+  <script src="../js/AddProduct.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.1/handlebars.min.js"></script>
+</body>
+</html>
+
+
+
+
+  

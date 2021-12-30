@@ -194,12 +194,12 @@ app.get('/TKDT', (req, res) => {
 })
 
 app.post('/TKDT', (req, res) => {
-    
+    let start = (req.body['start'])
     let bd = (req.body['StartDate'])
     let kt = (req.body['EndDate'])
     let mach = (req.body['MaCH'])
    
-    dboperator.getTKDT(bd,kt,mach).then(result => {
+    dboperator.getTKDT(start,bd,kt,mach).then(result => {
         console.log(result)
         res.json(result);
     })
@@ -224,3 +224,67 @@ app.post('/TKSLT', (req, res) => {
         res.json(result);
     })
 })
+
+//Thống kê doanh thu tất cả cửa hàng
+app.get('/TKDTALL', (req, res) => {
+    res.sendFile(path.join(staticPath,"TKDT_CH_ALL.html"));
+})
+
+app.post('/TKDTALL', (req, res) => {
+    let bd = (req.body['StartDate'])
+    let kt = (req.body['EndDate'])
+   
+    dboperator.getTKDTALL(bd,kt).then(result => {
+        console.log(result)
+        res.json(result);
+    })
+})
+
+//Doanh Thu Nhân Viên
+app.get('/DTNV', (req, res) => {
+    res.sendFile(path.join(staticPath,"DoanhThuNhanVien.html"));
+})
+
+app.post('/DTNV', (req, res) => {
+    let bd = (req.body['StartDate'])
+    let kt = (req.body['EndDate'])
+   
+    dboperator.getDTNV(bd,kt).then(result => {
+        console.log(result)
+        res.json(result);
+    })
+})
+//Thêm Sản Phẩm
+app.get('/AddProduct', (req, res) => {
+    res.sendFile(path.join(staticPath,"AddProduct.html"));
+})
+app.post('/AddProduct', (req, res) => {
+    let start = (req.body['start'])
+    //res.json(start)
+    if (!start || start<0)
+    {
+        start = 0
+    }
+    dboperator.getProductAdmin(start).then(result => {
+        console.log(result)
+        res.json(result);
+    })
+})
+
+//Add Product
+app.post('/AddProduct_add',(req,res)=>{
+    let product = {...req.body};
+     dboperator.addProduct(product).then(result => {
+         console.log(result)
+        res.status(201).json(result);
+     }) 
+ })
+ //Add Product to agent
+app.post('/AddProduct_addCH',(req,res)=>{
+    let product = {...req.body};
+    console.log("body")
+    console.log(req.body)
+     dboperator.addProductToAgent(product).then(result => {
+        res.status(201).json(result);
+     }) 
+ })

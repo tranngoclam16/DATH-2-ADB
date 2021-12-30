@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Kiểm Tra Số Lượng Tồn</title>
+  <title>Thống kê doanh thu Hệ thống</title>
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/TKDT.css">
@@ -12,20 +12,9 @@
     <br><br>
     <nav class="navbar"></nav>
     <script src="../js/nav_admin.js"></script>
-    <script>
-      var currentPage = 0;
-      var SL=0;
-      var MaCH="";
-      function goToPage(value){
-               currentPage += value;
-               console.log("sl: ",SL);
-               console.log("MaCH:",MaCH);
-                fetchTableSL(currentPage*1000,MaCH,SL);              
-      }
-  </script>
 </head>
 <style>
-   .tableFixHeight {
+    .tableFixHeight {
       overflow-y: auto;
       height: 690px;
     }
@@ -47,26 +36,27 @@
     }
 </style>
 <body style="display: block; background: rgb(253, 250, 250)">
-<div id="main" class="offset-xl-0.5 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 padding">
+<div id="main"class="offset-xl-0.5 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 padding">
   <div class="card">
     <div class="card-header p-4">
-      <h2>Kiểm Tra Số Lượng Tồn</h2>
+      <h2>Thống Kê Doanh Thu Hệ Thống</h2>
         <div>
             <form>
-                <input id="MaCH" type="text" placeholder="Mã Cửa Hàng" />
-                <input id="SoLuong" type="text" placeholder="Số Lượng Kiểm tra" />
+                <input id="NgayBatDau" type="date" placeholder="Ngày bắt đầu" />
+                <input id="NgayKetThuc" type="date" placeholder="Ngày kết thúc" />
                 <input id="submit" class="but" type="button" value="Xem">
-                <input id="submit_all" class="but" type="button" value="Xem tất cả cửa hàng">
             </form>
+        </div>
+        <div class="template">
+          <h3>
+            <div class="float-left field"> Tổng Doanh Thu: <span id="template-DoanhThu"></span></div>
+            <div class="float-right field"> Tổng sản phẩm đã bán: <span id="template-Tong"></span></div>
+          </h3>
         </div>
     </div> 
        
     <div class="card-body">
-      <div class="template">
-        <h3>
-          <div class="field" style="width:100%;"> Tổng sản phẩm: <span id="template-Tong"></span></div>
-        </h3>
-      </div>
+      
       <br>
       <div class="tableFixHeight">
         <table class="table table-striped" style="float: left;background: #fae8ea;">
@@ -74,19 +64,18 @@
             <tr>
               <th class="text-center" scope="col">#</th>
                 <th scope="col">Mã cửa hàng</th>
-                <th scope="col">Mã sản phẩm</th>
-                <th scope="col">Tên sản phẩm</th>
-                <th scope="col">Số lượng tồn</th>
+                <th scope="col">Địa chỉ</th>
+                <th scope="col">Phường</th>
+                <th scope="col">Quận</th>
+                <th scope="col">Thành Phố</th>
+                <th scope="col">Số điện thoại</th>
+                <th scope="col">Nhân viên quản lý</th>
+                <th scope="col">Doanh thu</th>
             </tr>
           </thead>
             <tbody id="listProduct"></tbody>
         </table>
       </div>
-    </div>
-    <div class="card-footer text-muted">
-      <span style="float: right; padding-left: 50px" id="currentPage" ></span>
-        <Button onClick="goToPage(1)"  style="float: right">Trang kế</Button>
-        <Button onClick="goToPage(-1)" style="float: left" >Trang trước</Button>
     </div>
   </div>
 </div>
@@ -97,9 +86,13 @@
   <tr>
       <th scope="row">{{ROWNUMBER}}</th>
       <td>{{MaCH}}</td>
-      <td>{{MaSP}}</td>
-      <td>{{TenSP}}</td>
-      <td>{{SoLuongTon}}</td>
+      <td>{{DiaChi}}</td>
+      <td>{{Phuong}}</td>
+      <td>{{Quan}}</td>
+      <td>{{ThanhPho}}</td>
+      <td>{{SDT}}</td>
+      <td>{{NVQuanLy}}</td>
+      <td style="background-color: rgb(228, 107, 127);">{{DoanhThu}}</td>
   </tr>
   </div>
   {{/each}}
@@ -107,14 +100,9 @@
 
 <script>
   submit.addEventListener('click', function() {
-    MaCH=$('#MaCH').val()
-    SL=$('#SoLuong').val()
-    fetchTableSL(0,MaCH,SL); 
-  });
-  submit_all.addEventListener('click', function() {
-    MaCH=""
-    SL=$('#SoLuong').val()
-    fetchTableSL(0,MaCH,SL);
+    var bd=$('#NgayBatDau').val()
+    var kt=$('#NgayKetThuc').val()
+    fetchTableAll(bd,kt); 
   });
 </script>
 
