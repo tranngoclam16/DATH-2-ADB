@@ -139,6 +139,7 @@ create table KhachHang (
    DiaChi   nvarchar(255),
    Email    varchar(50),
    pword    varchar (20),
+   TienTichLuy float, 
    constraint PK_KHACHHANG primary key (SDT)
 )
 go
