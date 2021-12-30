@@ -153,7 +153,6 @@ async function getTKSLT(start,MaCH,SL, num=100){
     }
 }
 
-<<<<<<< Updated upstream
 /*--------------------------------SẢN PHẨM---------------------------------------*/
 async function getProductList(start, num=100){
     //console.log('dboperator ', MaKH)
@@ -164,7 +163,12 @@ async function getProductList(start, num=100){
         .input('num', sql.Int, num)
         .execute("getProductList")
         return products.recordset;
-=======
+    }
+    catch(error){
+        return error;
+    }
+}
+
 async function getTKDTALL(bd,kt){
     //console.log('dboperator ', MaKH)
     try{
@@ -177,14 +181,12 @@ async function getTKDTALL(bd,kt){
         .execute("getStoreStatisticALL")
         console.log("product: ",bills)
         return {doanhthu: bills.output.doanhthu,sldaban:bills.output.sldaban, data: bills.recordset};
->>>>>>> Stashed changes
     }
     catch(error){
         return error;
     }
 }
 
-<<<<<<< Updated upstream
 async function getFilteredProduct(start, num=100, LH, TH){
     //console.log('dboperator ', MaKH)
     try{
@@ -196,7 +198,11 @@ async function getFilteredProduct(start, num=100, LH, TH){
         .input('th', sql.VarChar, TH)
         .execute("getFilteredProduct")
         return products.recordset;
-=======
+    }
+    catch(error){
+        return error;
+    }
+}
 async function getDTNV(bd,kt){
     //console.log('dboperator ', MaKH)
     try{
@@ -207,14 +213,12 @@ async function getDTNV(bd,kt){
         .execute("getDTNV")
         console.log("product: ",bills)
         return {data: bills.recordset};
->>>>>>> Stashed changes
     }
     catch(error){
         return error;
     }
 }
 
-<<<<<<< Updated upstream
 async function getBrandList(){
     //console.log('dboperator ', MaKH)
     try{
@@ -224,7 +228,11 @@ async function getBrandList(){
         //console.log(products.recordsets[0])
         
         return brands.recordset;
-=======
+    }
+    catch(error){
+        return error;
+    }
+}
 async function getProductAdmin(start,num=100){
     try{
         let pool=await sql.connect(config);
@@ -261,12 +269,12 @@ async function addProductToAgent(dkn){
         let insertProduct = await pool.request()
         .query("INSERT INTO CH_SP(MaCH,MaSP,SoLuongTon) VALUES('" + dkn.MaCH + "', " + dkn.MaSP + ", "+dkn.SoLuongTon+")");
         return insertProduct.recordsets;
->>>>>>> Stashed changes
     }
     catch(error){
         console.log(error);
     }
 }
+
 module.exports={
     getKH:getKH,
     addCustomer:addCustomer,
