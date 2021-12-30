@@ -35,9 +35,39 @@ app.listen(3000, () => {
   })
 
 app.get('/',(reg,res)=>{
-    res.sendFile(path.join(staticPath,"index1.html"));
+    res.sendFile(path.join(staticPath,"index.html"));
 })
 
+/*--------------------------------SẢN PHẨM---------------------------------------*/
+app.get('/ProductList', (req, res) => {
+    res.sendFile(path.join(staticPath,"products.html"));
+})
+
+app.post('/ProductList', (req, res) => {
+    let {start, LH, TH} = req.body
+    //res.json(start)
+    if (!start || start<0)
+    {
+        start = 0
+    }
+    console.log('filtered: ', LH != '' || TH !='')
+    if (LH != '' || TH !=''){
+        dboperator.getFilteredProduct(start,num=10, LH, TH).then(result => {
+            res.status(201).json(result);
+        })
+    }
+    else {
+        dboperator.getProductList(start,num=10).then(result => {
+            res.status(201).json(result);
+        })
+    }
+})
+
+app.post('/BrandList', (req, res) => {
+    dboperator.getBrandList().then(result => {
+        res.status(201).json(result);
+    })
+})
 
 /*--------------------------------KHÁCH HÀNG-------------------------------------*/
 app.get('/LogInKH', (req, res) => {

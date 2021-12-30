@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon serverjs"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +15,7 @@
     "express": "^4.17.2",
     "morgan": "^1.10.0",
     "msnodesqlv8": "^2.4.4",
-    "mssql": "^7.3.0"
+    "mssql": "^7.3.0",
+    "nodemon": "^2.0.15"
   }
 }

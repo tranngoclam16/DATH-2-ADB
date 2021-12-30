@@ -98,11 +98,63 @@ async function getLSTL(start,bd,kt,MaKH, num=100){
         return error;
     }
 }
+
+/*--------------------------------SẢN PHẨM---------------------------------------*/
+async function getProductList(start, num=100){
+    //console.log('dboperator ', MaKH)
+    try{
+        let pool=await sql.connect(config);
+        let products=await pool.request()
+        .input('start', sql.Int, start)
+        .input('num', sql.Int, num)
+        .execute("getProductList")
+        return products.recordset;
+    }
+    catch(error){
+        return error;
+    }
+}
+
+async function getFilteredProduct(start, num=100, LH, TH){
+    //console.log('dboperator ', MaKH)
+    try{
+        let pool=await sql.connect(config);
+        let products=await pool.request()
+        .input('start', sql.Int, start)
+        .input('num', sql.Int, num)
+        .input('lh', sql.VarChar, LH)
+        .input('th', sql.VarChar, TH)
+        .execute("getFilteredProduct")
+        return products.recordset;
+    }
+    catch(error){
+        return error;
+    }
+}
+
+async function getBrandList(){
+    //console.log('dboperator ', MaKH)
+    try{
+        let pool=await sql.connect(config);
+        var query = "SELECT MaTH, Ten FROM ThuongHieu"
+        let brands=await pool.request().query(query);
+        //console.log(products.recordsets[0])
+        
+        return brands.recordset;
+    }
+    catch(error){
+        console.log(error);
+    }
+}
+
 module.exports={
     getKH:getKH,
     addCustomer:addCustomer,
     getCustomerBillList:getCustomerBillList,
     getDetailBill:getDetailBill,
     getBill:getBill,
-    getLSTL:getLSTL
+    getLSTL:getLSTL,
+    getProductList:getProductList,
+    getBrandList:getBrandList,
+    getFilteredProduct:getFilteredProduct
 }
