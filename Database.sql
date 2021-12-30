@@ -14,6 +14,7 @@ drop database DATH#2
 create table CH_SP (
    MaSP bigint,
    MaCH varchar(8),
+   TenSP nvarchar(100),
    SoLuongTon  int,
    primary key (MaSP, MaCH)
 )
@@ -23,13 +24,13 @@ go
 create table CTDH (
    MaDH			bigint,
    MaSP			bigint,
+   TenSP nvarchar(100),
    SoLuong		int,
    DonGia		int,
    ThanhTien	int,
    primary key (MaDH, MaSP)
 )
 go
-
 
 --Table: CTPD
 create table CTPD (
