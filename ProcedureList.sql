@@ -72,8 +72,71 @@ begin
 	and DH.NgayLap>=@bd and DH.NgayLap<=@kt
 
 	SELECT * 
-	FROM (SELECT ROW_NUMBER() OVER (ORDER BY DH.MaDH) AS ROWNUMBER,DH.MaDH, convert(varchar, NgayLap, 113) as NgayLap, TongTien, LoaiDH,TichLuy
+	FROM (SELECT ROW_NUMBER() OVER (ORDER BY DH.MaDH) AS ROWNUMBER,DH.MaDH, convert(varchar, NgayLap, 113) as NgayLap, TongTien, LoaiDH,TichLuy,(DH.TongTien*DH.TichLuy*0.01) AS DiemTichLuy
          FROM DonHang DH 
 		where DH.MaKH=@makh and DH.NgayLap>=@bd and DH.NgayLap<=@kt )  AS T 
 	WHERE T.ROWNUMBER >= @start AND T.ROWNUMBER < (@start+@num)
 end
+GO
+--DROP PROC getLSTL
+------------------------------------------------------------------------------
+--Thống kê doanh thu đã bán theo ngày, số lượng đã bán, số lượng tồn
+create procedure getStoreStatisticByDay
+	@bd date,
+	@kt date,
+	@mach varchar(8),
+	@doanhthu float output,
+	@sldaban int output
+as
+BEGIN
+	select @doanhthu= (select sum(DH.TongTien) from DonHang DH where DH.MaCH=@mach and DH.NgayLap>=@bd and DH.NgayLap<=@kt)
+	select @sldaban= (select sum(CTDH.SoLuong) FROM DonHang DH join CTDH on DH.MaDH= CTDH.MaDH
+						where DH.MaCH= @mach and DH.NgayLap>=@bd and DH.NgayLap<=@kt)
+
+	select CH_SP.MaCH,CH_SP.MaSP, CH_SP.TenSP,T.sldb,CH_SP.SoLuongTon
+	from CH_SP 
+	LEFT join (select CTDH.MaSP,sum(CTDH.SoLuong) as 'sldb'
+					FROM DonHang DH join CTDH on DH.MaDH= CTDH.MaDH
+					where DH.MaCH=@mach and DH.NgayLap>=@bd and DH.NgayLap<=@kt 
+					group by (CTDH.MaSP)) AS T
+	on T.MaSP=CH_SP.MaSP
+	where CH_SP.MaCH=@mach
+END
+GO
+--DROP PROC getStoreStatisticByDay
+-----------------------------------------------------------------------
+--Thống kê sản phẩm < n theo cửa hàng
+create procedure getTKSLT
+	(@start int,@mach varchar(8),@slt int, @num int, @tong int output)
+as
+begin
+	select @tong = count(MaSP)
+	from CH_SP
+	where CH_SP.MaCH=@mach and SoLuongTon<=@slt
+
+	SELECT * 
+	FROM (SELECT ROW_NUMBER() OVER (ORDER BY MaSP) AS ROWNUMBER,MaCH,MaSP, TenSP, SoLuongTon
+         FROM CH_SP 
+		where CH_SP.MaCH=@mach and CH_SP.SoLuongTon<=@slt )  AS T 
+	WHERE T.ROWNUMBER >= @start AND T.ROWNUMBER < (@start+@num)
+end
+GO
+--DROP PROC getTKSLT
+-----------------------------------------------------------------------
+--Thống kê sản phẩm < n của tất cả cửa hàng
+create procedure getTKSLTAll
+	(@start int,@slt int, @num int, @tong int output)
+as
+begin
+	select @tong = count(MaSP)
+	from CH_SP
+	where SoLuongTon<=@slt
+
+	SELECT * 
+	FROM (SELECT ROW_NUMBER() OVER (ORDER BY MaSP) AS ROWNUMBER,MaCH,MaSP, TenSP, SoLuongTon
+         FROM CH_SP 
+		where CH_SP.SoLuongTon<=@slt )  AS T 
+	WHERE T.ROWNUMBER >= @start AND T.ROWNUMBER < (@start+@num)
+end
+GO
+--DROP PROC getTKSLTAll

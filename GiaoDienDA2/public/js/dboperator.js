@@ -99,6 +99,57 @@ async function getLSTL(start,bd,kt,MaKH, num=100){
     }
 }
 
+async function getTKDT(bd,kt,MaCH){
+    //console.log('dboperator ', MaKH)
+    try{
+        let pool=await sql.connect(config);
+        let bills=await pool.request()
+        .input('bd', sql.Date, bd)
+        .input('kt', sql.Date, kt)
+        .input('mach', sql.VarChar(8), MaCH)
+        .output('doanhthu', sql.Float)
+        .output('sldaban', sql.Int)
+        .execute("getStoreStatisticByDay")
+        console.log("product: ",bills)
+        return {doanhthu: bills.output.doanhthu,sldaban:bills.output.sldaban, data: bills.recordset};
+    }
+    catch(error){
+        return error;
+    }
+}
+
+async function getTKSLT(start,MaCH,SL, num=100){
+    //console.log('dboperator ', MaKH)
+    try{
+
+        if (MaCH==""){
+            let pool=await sql.connect(config);
+            let bills=await pool.request()
+            .input('start', sql.Int, start)
+            .input('slt', sql.Int, SL)
+            .input('num', sql.Int, num)
+            .output('tong',sql.Int)
+            .execute("getTKSLTAll")
+            return {tableLength: bills.output.tong, data: bills.recordset};
+        }
+        else{
+            let pool=await sql.connect(config);
+            let bills=await pool.request()
+            .input('start', sql.Int, start)
+            .input('mach', sql.VarChar(8), MaCH)
+            .input('slt', sql.Int, SL)
+            .input('num', sql.Int, num)
+            .output('tong',sql.Int)
+            .execute("getTKSLT")
+            return {tableLength: bills.output.tong, data: bills.recordset};
+        }
+        
+    }
+    catch(error){
+        return error;
+    }
+}
+
 /*--------------------------------SẢN PHẨM---------------------------------------*/
 async function getProductList(start, num=100){
     //console.log('dboperator ', MaKH)
@@ -146,7 +197,6 @@ async function getBrandList(){
         console.log(error);
     }
 }
-
 module.exports={
     getKH:getKH,
     addCustomer:addCustomer,
@@ -156,5 +206,7 @@ module.exports={
     getLSTL:getLSTL,
     getProductList:getProductList,
     getBrandList:getBrandList,
-    getFilteredProduct:getFilteredProduct
+    getFilteredProduct:getFilteredProduct,
+    getTKDT:getTKDT,
+    getTKSLT:getTKSLT
 }

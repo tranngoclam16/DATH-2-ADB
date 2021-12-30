@@ -186,3 +186,41 @@ app.post('/LSTL', (req, res) => {
         res.json(result);
     })
 })
+
+/*----------------------------------CỬA HÀNG---------------------------------------*/
+//Thống kê doanh thu theo ngày
+app.get('/TKDT', (req, res) => {
+    res.sendFile(path.join(staticPath,"ThongKeDT_CH.html"));
+})
+
+app.post('/TKDT', (req, res) => {
+    
+    let bd = (req.body['StartDate'])
+    let kt = (req.body['EndDate'])
+    let mach = (req.body['MaCH'])
+   
+    dboperator.getTKDT(bd,kt,mach).then(result => {
+        console.log(result)
+        res.json(result);
+    })
+})
+
+//Thống kê sản phẩm theo số lượng tồn và cửa hàng
+app.get('/TKSLT', (req, res) => {
+    res.sendFile(path.join(staticPath,"TKSoLuongSP.html"));
+})
+
+app.post('/TKSLT', (req, res) => {
+    let start = (req.body['start'])
+    let sl = (req.body['SL'])
+    let mach = (req.body['MaCH'])
+    //res.json(start)
+    if (!start || start<0)
+    {
+        start = 0
+    }
+    dboperator.getTKSLT(start,mach,sl).then(result => {
+        console.log(result)
+        res.json(result);
+    })
+})
