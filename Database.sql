@@ -158,7 +158,7 @@ create table KhachHang (
    HoTen    nvarchar(100),
    SDT      varchar(10), --username
    LoaiThe  int,
-   GioiTinh varchar(3),
+   GioiTinh nvarchar(3),
    NgaySinh datetime,
    DiaChi   nvarchar(255),
    Email    varchar(50),
