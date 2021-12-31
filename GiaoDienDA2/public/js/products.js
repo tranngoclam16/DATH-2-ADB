@@ -5,8 +5,10 @@ function fetchProductList (value) {
     let objToPost = { 
         start: value,
         LH: '',
-        TH: '' 
+        TH: '' ,
+        search: $('#search-value').val() || ' '
     }
+    console.log(objToPost)
     fetch('/ProductList', {
     method: 'POST',
     headers: {
@@ -26,13 +28,13 @@ function fetchProductList (value) {
                         <div class="col-4 col-md-6 col-sm-12">
                             <div class="product-card">
                                 <div class="product-card-img">
-                                    <img src=./img/products/1.jpg alt="">
-                                    <img src=./img/products/1.jpg alt="">
+                                    <img src="./img/products/1.jpg" alt="">
+                                    <img src="./img/products/2.jpg" alt="">
                                 </div>
                                 <div class="product-card-info">
                                     <div class="product-btn">
-                                        <a href="/ProductDetail/${e.MaSP}" class="btn-flat btn-hover btn-shop-now">shop now</a>
-                                        <button class="btn-flat btn-hover btn-cart-add">
+                                        <a href="/ProductDetail/${e.MaSP}" class="btn-flat btn-hover btn-shop-now">detail</a>
+                                        <button class="btn-flat btn-hover btn-cart-add" id="cartBtn">
                                             <i class='bx bxs-cart-add'></i>
                                         </button>
                                         <button class="btn-flat btn-hover btn-cart-add">
@@ -57,12 +59,12 @@ function fetchProductList (value) {
                         <div class="product-card">
                             <div class="product-card-img">
                                 <img src=./img/products/1.jpg alt="">
-                                <img src=./img/products/1.jpg alt="">
+                                <img src=./img/products/2.jpg alt="">
                             </div>
                             <div class="product-card-info">
                                 <div class="product-btn">
-                                    <a href="./product-detail.html" class="btn-flat btn-hover btn-shop-now">shop now</a>
-                                    <button class="btn-flat btn-hover btn-cart-add">
+                                    <a href="/ProductDetail/${e.MaSP}" class="btn-flat btn-hover btn-shop-now">detail</a>
+                                    <button class="btn-flat btn-hover btn-cart-add" id="cartBtn">
                                         <i class='bx bxs-cart-add'></i>
                                     </button>
                                     <button class="btn-flat btn-hover btn-cart-add">
@@ -95,7 +97,8 @@ function fetchFilteredProduct (value, LH, TH) {
     let objToPost = { 
         start: value,
         LH: LH,
-        TH: TH 
+        TH: TH, 
+        search: $('#search-value').val() || ' '
     }
     fetch('/ProductList', {
     method: 'POST',
@@ -117,12 +120,12 @@ function fetchFilteredProduct (value, LH, TH) {
                             <div class="product-card">
                                 <div class="product-card-img">
                                     <img src=./img/products/1.jpg alt="">
-                                    <img src=./img/products/1.jpg alt="">
+                                    <img src=./img/products/2.jpg alt="">
                                 </div>
                                 <div class="product-card-info">
                                     <div class="product-btn">
-                                        <a href="/ProductDetail/${e.MaSP}" class="btn-flat btn-hover btn-shop-now">shop now</a>
-                                        <button class="btn-flat btn-hover btn-cart-add">
+                                        <a href="/ProductDetail/${e.MaSP}" class="btn-flat btn-hover btn-shop-now">detail</a>
+                                        <button class="btn-flat btn-hover btn-cart-add" id="cartBtn">
                                             <i class='bx bxs-cart-add'></i>
                                         </button>
                                         <button class="btn-flat btn-hover btn-cart-add">
@@ -147,12 +150,12 @@ function fetchFilteredProduct (value, LH, TH) {
                         <div class="product-card">
                             <div class="product-card-img">
                                 <img src=./img/products/1.jpg alt="">
-                                <img src=./img/products/1.jpg alt="">
+                                <img src=./img/products/2.jpg alt="">
                             </div>
                             <div class="product-card-info">
                                 <div class="product-btn">
-                                    <a href="./product-detail.html" class="btn-flat btn-hover btn-shop-now">shop now</a>
-                                    <button class="btn-flat btn-hover btn-cart-add">
+                                    <a href="/ProductDetail/${e.MaSP}" class="btn-flat btn-hover btn-shop-now">detail</a>
+                                    <button class="btn-flat btn-hover btn-cart-add" id="cartBtn">
                                         <i class='bx bxs-cart-add'></i>
                                     </button>
                                     <button class="btn-flat btn-hover btn-cart-add">
@@ -282,3 +285,21 @@ let filter_col = document.querySelector('#filter-col')
 document.querySelector('#filter-toggle').addEventListener('click', () => filter_col.classList.toggle('active'))
 
 document.querySelector('#filter-close').addEventListener('click', () => filter_col.classList.toggle('active'))
+
+document.querySelector('#filter-clear').addEventListener('click', function() {
+    sessionStorage.removeItem('LH')
+    sessionStorage.removeItem('TH')
+    location.reload('/ProductList')
+})
+
+function searchBtn(){
+    
+    let value =$('#search-value').val()
+    console.log(value)
+    if(!value)
+        location.href='/ProductList'
+    else{
+        let url = '/Search/' + value
+        location.href=url
+    }
+}

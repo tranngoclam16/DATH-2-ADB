@@ -66,7 +66,7 @@ const processData = (data)=> {
   } else if (data.SDT){
       alert('Welcome to our website!')
       sessionStorage.user = JSON.stringify(data)
-      location.replace('/Info')
+      location.replace('/')
   }
 }
 

@@ -44,7 +44,7 @@ app.get('/ProductList', (req, res) => {
 })
 
 app.post('/ProductList', (req, res) => {
-    let {start, LH, TH} = req.body
+    let {start, LH, TH, search} = req.body
     //res.json(start)
     if (!start || start<0)
     {
@@ -52,12 +52,14 @@ app.post('/ProductList', (req, res) => {
     }
     console.log('filtered: ', LH != '' || TH !='')
     if (LH != '' || TH !=''){
-        dboperator.getFilteredProduct(start,num=10, LH, TH).then(result => {
+        dboperator.getFilteredProduct(start,num=10, LH, TH, search).then(result => {
+            console.log(result)
             res.status(201).json(result);
         })
     }
     else {
-        dboperator.getProductList(start,num=10).then(result => {
+        dboperator.getProductList(start,num=10, search).then(result => {
+            console.log(result)
             res.status(201).json(result);
         })
     }
@@ -65,6 +67,22 @@ app.post('/ProductList', (req, res) => {
 
 app.post('/BrandList', (req, res) => {
     dboperator.getBrandList().then(result => {
+        res.status(201).json(result);
+    })
+})
+
+app.get('/Search/:value', (req, res) => {
+    res.sendFile(path.join(staticPath,"search.html"));
+})
+
+app.get('/ProductDetail/:value', (req, res) => {
+    res.sendFile(path.join(staticPath,"product-detail.html"));
+})
+
+app.post('/ProductDetail', (req, res) => {
+    let {id} = req.body
+    //console.log(typeof parseInt(id))
+    dboperator.getProductDetail(parseInt(id)).then(result => {
         res.status(201).json(result);
     })
 })

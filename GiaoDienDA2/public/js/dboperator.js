@@ -154,13 +154,14 @@ async function getTKSLT(start,MaCH,SL, num=100){
 }
 
 /*--------------------------------SẢN PHẨM---------------------------------------*/
-async function getProductList(start, num=100){
+async function getProductList(start, num=100, search){
     //console.log('dboperator ', MaKH)
     try{
         let pool=await sql.connect(config);
         let products=await pool.request()
         .input('start', sql.Int, start)
         .input('num', sql.Int, num)
+        .input('search', sql.NVarChar, search)
         .execute("getProductList")
         return products.recordset;
     }
@@ -187,7 +188,7 @@ async function getTKDTALL(bd,kt){
     }
 }
 
-async function getFilteredProduct(start, num=100, LH, TH){
+async function getFilteredProduct(start, num=100, LH, TH, search){
     //console.log('dboperator ', MaKH)
     try{
         let pool=await sql.connect(config);
@@ -196,6 +197,7 @@ async function getFilteredProduct(start, num=100, LH, TH){
         .input('num', sql.Int, num)
         .input('lh', sql.VarChar, LH)
         .input('th', sql.VarChar, TH)
+        .input('search', sql.NVarChar, search)
         .execute("getFilteredProduct")
         return products.recordset;
     }
@@ -275,6 +277,22 @@ async function addProductToAgent(dkn){
     }
 }
 
+async function getProductDetail(id){
+    try{
+        let pool = await sql.connect(config);
+        let product = await pool.request()
+        .input('masp', sql.Int, id)
+        .execute("getProductDetail")
+        console.log(product.recordsets[0][0])
+        return product.recordsets[0][0];
+    }
+    catch(error){
+        console.log(error);
+    }
+}
+
+
+
 module.exports={
     getKH:getKH,
     addCustomer:addCustomer,
@@ -291,5 +309,6 @@ module.exports={
     getDTNV:getDTNV,
     getProductAdmin:getProductAdmin,
     addProduct:addProduct,
-    addProductToAgent:addProductToAgent
+    addProductToAgent:addProductToAgent,
+    getProductDetail:getProductDetail
 }

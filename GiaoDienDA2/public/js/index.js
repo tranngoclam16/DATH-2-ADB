@@ -106,8 +106,8 @@ products.forEach(e => {
         <div class="col-3 col-md-6 col-sm-12">
             <div class="product-card">
                 <div class="product-card-img">
-                    <img src="${e.image1}" alt="">
-                    <img src="${e.image2}" alt="">
+                    <img src="./img/products/1.jpg" alt="">
+                    <img src="./img/products/2.jpg" alt="">
                 </div>
                 <div class="product-card-info">
                     <div class="product-btn">

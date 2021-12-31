@@ -504,7 +504,7 @@ ul.devided > li:last-child {
 }
 
 .product-card-img {
-    height: 300px;
+    height: 250px;
     overflow: hidden;
     display: flex;
     align-items: center;

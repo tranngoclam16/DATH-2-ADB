@@ -87,12 +87,12 @@
                 <div class="mid-header container">
                     <a href="#" class="logo">ATShop</a>
                     <div class="search">
-                        <input type="text" placeholder="Search">
-                        <i class='bx bx-search-alt'></i>
+                        <input type="text" placeholder="Search" id="search-value">
+                        <i class='bx bx-search-alt' onclick="searchBtn()"></i>
                     </div>
-                    <ul class="user-menu">
+                    <ul class="user-menu" id="user-menu">
                         <li><a href="#"><i class='bx bx-bell'></i></a></li>
-                        <li><a href="#"><i class='bx bx-user-circle'></i></a></li>
+                        <li><a href="/Info"><i class='bx bx-user-circle'></i></a></li>
                         <li><a href="#"><i class='bx bx-cart'></i></a></li>
                     </ul>
                 </div>
@@ -102,84 +102,13 @@
             <div class="bg-second">
                 <div class="bottom-header container">
                     <ul class="main-menu">
-                        <li><a href="#">home</a></li>
-                        <!-- mega menu -->
-                        <li class="mega-dropdown">
-                            <a href="./products.html">Shop<i class='bx bxs-chevron-down'></i></a>
-                            <div class="mega-content">
-                                <div class="row">
-                                    <div class="col-3 col-md-12">
-                                        <div class="box">
-                                            <h3>Categories</h3>
-                                            <ul>
-                                                <li><a href="#">Wireless</a></li>
-                                                <li><a href="#">Inear headphone</a></li>
-                                                <li><a href="#">Overear headphone</a></li>
-                                                <li><a href="#">sport headphone</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="col-3 col-md-12">
-                                        <div class="box">
-                                            <h3>Categories</h3>
-                                            <ul>
-                                                <li><a href="#">Wireless</a></li>
-                                                <li><a href="#">Inear headphone</a></li>
-                                                <li><a href="#">Overear headphone</a></li>
-                                                <li><a href="#">sport headphone</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="col-3 col-md-12">
-                                        <div class="box">
-                                            <h3>Categories</h3>
-                                            <ul>
-                                                <li><a href="#">Wireless</a></li>
-                                                <li><a href="#">Inear headphone</a></li>
-                                                <li><a href="#">Overear headphone</a></li>
-                                                <li><a href="#">sport headphone</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="col-3 col-md-12">
-                                        <div class="box">
-                                            <h3>Categories</h3>
-                                            <ul>
-                                                <li><a href="#">Wireless</a></li>
-                                                <li><a href="#">Inear headphone</a></li>
-                                                <li><a href="#">Overear headphone</a></li>
-                                                <li><a href="#">sport headphone</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row img-row">
-                                    <div class="col-3">
-                                        <div class="box">
-                                            <img src="./img/products/1.jpg" alt="">
-                                        </div>
-                                    </div>
-                                    <div class="col-3">
-                                        <div class="box">
-                                            <img src="./img/products/1.jpg" alt="">
-                                        </div>
-                                    </div>
-                                    <div class="col-3">
-                                        <div class="box">
-                                            <img src="./img/products/1.jpg" alt="">
-                                        </div>
-                                    </div>
-                                    <div class="col-3">
-                                        <div class="box">
-                                            <img src="./img/products/1.jpg" alt="">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
+                        <li><a href="/">home</a></li>
+                        <li><a href="/ProductList">Shop</a></li>
                         <!-- end mega menu -->
                         <li><a href="#">blog</a></li>
                         <li><a href="#">contact</a></li>
+                        <li><a href="/LogInKH" id="signin-signup">Sign in / Sign up</a></li>
+                        <li><a href="#" id="logout">Log out</a></li>
                     </ul>
                 </div>
             </div>
@@ -204,6 +133,7 @@
                     <div class="col-3 filter-col" id="filter-col">
                         <div class="box filter-toggle-box">
                             <button class="btn-flat btn-hover" id="filter-close">close</button>
+                            <button class="btn-flat btn-hover" id="filter-clear">clear</button>
                         </div>
                         <div class="box">
                             <span class="filter-header">
