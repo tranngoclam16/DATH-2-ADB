@@ -148,7 +148,7 @@ end
 GO
 --DROP PROC getTKSLTAll
 ------------------------------------------------------------------------------
---Thống kê doanh thu đã bán theo ngày, số lượng đã bán, số lượng tồn
+--Thống kê doanh thu đã bán theo ngày của hệ thống
 create procedure getStoreStatisticALL
 	@bd date,
 	@kt date,

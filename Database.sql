@@ -90,26 +90,49 @@ create table TinhTrangDonHang (
 )
 go
 
+--------------------------------------------------TẠO PARTITION------------------------------------------------------------------
+--Tạo database và file group
+ALTER DATABASE DATH#2 ADD FILEGROUP FG2019AndBefore
+ALTER DATABASE DATH#2 ADD FILEGROUP FG2020
+ALTER DATABASE DATH#2 ADD FILEGROUP FG2021AndAfter
 
+ALTER DATABASE DATH#2 ADD FILE (NAME = N'FY2019AndBefore', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\FY2019AndBefore.ndf') TO FILEGROUP FG2019AndBefore
+ 
+ALTER DATABASE DATH#2 ADD FILE (NAME = N'FY2020', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\FY2020.ndf') TO FILEGROUP FG2020
+ 
+ALTER DATABASE DATH#2 ADD FILE (NAME = N'FY2021AndAfter', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\FY2021AndAfter.ndf') TO FILEGROUP FG2021AndAfter
+
+
+--Tạo partition function và partition scheme
+CREATE PARTITION FUNCTION PFunc_NL(DATETIME) AS RANGE RIGHT FOR VALUES ('2020-01-01', '2021-01-01')
+GO
+CREATE PARTITION SCHEME PScheme_NL AS PARTITION PFunc_NL TO (FG2019AndBefore, FG2020, FG2021AndAfter)
+/*DROP PARTITION SCHEME PScheme_NL
+DROP PARTITION FUNCTION PFunc_NL*/
 --Table: DonHang          
 create table DonHang (
-   MaDH                 bigint identity(1,1),
+   MaDH                 bigint identity(1,1) CONSTRAINT PK_Example PRIMARY KEY NONCLUSTERED (MaDH) ON [PRIMARY],
    MaNV                 varchar(8),
    MaCH                 varchar(8),
    MaKH 	            varchar(10),
-   NgayLap              datetime,
+   NgayLap              datetime INDEX cdx NONCLUSTERED ON PScheme_NL(NgayLap),
    MaTT					int,
    MaTinhTrang			int,
    SoThe                varchar(20),
    TongTien             int,
    ChietKhau            int,
    LoaiDH				int, --1:offline, 2:online
-	TichLuy				int,
-   constraint PK_DONHANG primary key (MaDH)
+   TichLuy				int,
+   --constraint PK_DONHANG primary key (MaDH)
 )
 go
-
-
+/*
+--Test partition
+SELECT $PARTITION.PFunc_NL('2019-12-31')
+SELECT $PARTITION.PFunc_NL('2020-01-01')
+SELECT $PARTITION.PFunc_NL('2020-11-25')
+SELECT $PARTITION.PFunc_NL('2021-03-16')*/
+------------------------------------------------------------------------------------------------------------------------------------------
 --Table: HDDienTu         
 create table HDDienTu (
    So       int identity(1,1),
