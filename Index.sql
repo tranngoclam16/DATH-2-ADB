@@ -6,9 +6,12 @@
 --	INNER JOIN KhachHang ON KhachHang.SDT=DonHang.MaKH
 --WHERE CuaHang.Quan = @Quan
 
-CREATE NONCLUSTERED INDEX idx_don_hang
+CREATE NONCLUSTERED INDEX idx_ma_cua_hang
 ON DonHang (MaCH) 
 INCLUDE (MaDH, MaNV, MAKH, NgayLap, MaTT, MaTinhTrang, SoThe, TongTien, ChietKhau, LoaiDH, TichLuy)
+
+CREATE NONCLUSTERED INDEX idx_cua_hang_quan
+ON CuaHang (Quan)
 
 
 --------------------------------------------------------INDEX TÊN SẢN PHẨM--------------------------------------------------------

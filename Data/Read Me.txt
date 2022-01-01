@@ -1,2 +1,5 @@
-Chạy scripts trong link drive: https://drive.google.com/drive/u/2/folders/1gkKIPfP5CUZMBBxhmEDQnGc280Q2kiF6
+Chạy scripts theo thứ tự ThuongHieu->LoaiHang->SanPham->KhachHang->CuaHang.NhanVien->CH_SP->DonHang->CTDH
+Trong link drive: 
+https://drive.google.com/drive/u/2/folders/1gkKIPfP5CUZMBBxhmEDQnGc280Q2kiF6
+
 Chạy file UpdateData.sql
