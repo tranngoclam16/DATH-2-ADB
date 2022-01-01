@@ -27,10 +27,9 @@ BEGIN
 END
 GO
 
-CREATE TRIGGER ThanhTien_TongTien_TichLuy on CTDH
+CREATE TRIGGER ThanhTien_TongTien on CTDH
 for INSERT, UPDATE, DELETE
 as
-DECLARE @loaithe int
 BEGIN
 	IF TRIGGER_NESTLEVEL() > 1
 		RETURN
@@ -46,43 +45,52 @@ BEGIN
 	WHERE EXISTS(SELECT * from INSERTED I WHERE I.MaDH = DonHang.MaDH)
 	or EXISTS(SELECT * from DELETED D WHERE D.MaDH = DonHang.MaDH)
 
+END
+GO
+
+CREATE TRIGGER TichLuy_DH on DonHang
+for INSERT
+as
+BEGIN
+	DECLARE @loaithe int
 	SET @loaithe = (SELECT KH.LoaiThe
 					from DonHang DH join KhachHang KH on DH.MaKH = KH.SDT
 					WHERE EXISTS(SELECT * from INSERTED I WHERE I.MaDH = DH.MaDH))
 
 	IF (@loaithe = 1) --Thẻ thường
 		UPDATE DonHang
-		SET TichLuy = TongTien*1/100
+		SET TichLuy = 1
 		WHERE EXISTS(SELECT * from INSERTED I WHERE I.MaDH = DonHang.MaDH)
 
 	ELSE IF (@loaithe = 2) --Thẻ VIP GOLD
 		UPDATE DonHang
-		SET TichLuy = TongTien*3/100
+		SET TichLuy = 3
 		WHERE EXISTS(SELECT * from INSERTED I WHERE I.MaDH = DonHang.MaDH)
 
 	ELSE IF (@loaithe = 3) --Thẻ VIP DIAMOND
 		UPDATE DonHang
-		SET TichLuy = TongTien*5/100
+		SET TichLuy = 5
 		WHERE EXISTS(SELECT * from INSERTED I WHERE I.MaDH = DonHang.MaDH)
 
 END
 GO
 
-CREATE TRIGGER TichLuy_KH on CTDH
-for INSERT, UPDATE
+CREATE TRIGGER TichLuy_KH on DonHang
+for UPDATE
 as
 BEGIN
 	IF TRIGGER_NESTLEVEL() > 1
 		RETURN
 
+	DECLARE @tichluy int, @tongtien int
 	UPDATE KhachHang
-	SET TienTichLuy = (SELECT SUM(DH.TichLuy)
+	SET @tichluy = (SELECT DH.TichLuy
 					from DonHang DH
-					WHERE KhachHang.SDT = DH.MaKH)
-	WHERE EXISTS(SELECT * from INSERTED I join DonHang DH on I.MaDH = DH.MaDH
-					WHERE DH.MaKH = KhachHang.SDT)
-	or EXISTS(SELECT * from DELETED D join DonHang DH on D.MaDH = DH.MaDH
-					WHERE DH.MaKH = KhachHang.SDT)
+					WHERE KhachHang.SDT = DH.MaKH),
+		@tongtien = (SELECT DH.TongTien
+					from DonHang DH
+					WHERE KhachHang.SDT = DH.MaKH),
+		TienTichLuy = @tongtien * @tichluy / 100
+	WHERE EXISTS(SELECT * from INSERTED I WHERE I.MaKH = KhachHang.SDT)
 END
 GO
-
