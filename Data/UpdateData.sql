@@ -73,4 +73,11 @@ UPDATE KhachHang
 SET KhachHang.TienTichLuy = #tempUP8.TienTichLuy
 FROM KhachHang INNER JOIN #tempUP8 ON #tempUP8.MaKH=KhachHang.SDT
 
-
+--UPDATE 9--Tên Sản phẩm trong CH_SP
+CREATE TABLE #tempUP9 (MaSP bigint, TenSP nvarchar(100))
+INSERT INTO #tempUP9 (MaSP, TenSP)
+	(SELECT MaSP, TenSP as DonGia FROM SanPham)
+UPDATE CH_SP
+SET CH_SP.TenSP = #tempUP9.TenSP
+FROM CH_SP INNER JOIN #tempUP9 ON CH_SP.MaSP = #tempUP9.MaSP
+DROP TABLE #tempUP9

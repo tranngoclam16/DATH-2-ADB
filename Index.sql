@@ -14,7 +14,7 @@ CREATE NONCLUSTERED INDEX idx_cua_hang_quan
 ON CuaHang (Quan)
 
 
---------------------------------------------------------INDEX TÊN SẢN PHẨM--------------------------------------------------------
+--------------------------------------------------------INDEX MÃ SẢN PHẨM--------------------------------------------------------
 ----Query 1
 --SELECT * FROM CTDH INNER JOIN SanPham ON CTDH.MaSP = SanPham.MaSP
 ----Query 2
@@ -24,6 +24,7 @@ ON CuaHang (Quan)
 CREATE NONCLUSTERED INDEX idx_ten_sp
 ON CTDH (MaSP)
 INCLUDE (TenSP, SoLuong, DonGia, ThanhTien)
+
 
 
 --------------------------------------------------------INDEX THƯƠNG HIỆU--------------------------------------------------------
