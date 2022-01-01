@@ -14,9 +14,10 @@
   <script src="../js/nav_admin.js"></script>
   <script>
     var currentPage = 0;
+    var MaCH="";
     function goToPage(value){
              currentPage += value;
-             fetchTable(currentPage*100);            
+             fetchTable(currentPage*100,MaCH);            
     }
     goToPage(0)
 </script>
@@ -75,6 +76,12 @@
         <div class="card" >
             <div class="card-header p-4">
                 <h2>Danh Sách Sản Phẩm</h2>
+                <div>
+                    <form style="align-content: center;width:30%;">
+                        <input id="MaCH1" type="text" placeholder="Mã Cửa Hàng" />
+                        <input id="mach_submit" class="but" type="button" value="Xem">
+                    </form>
+                </div>
             </div> 
             <div class="card-body">
                 <div class="tableFixHeight">
@@ -139,6 +146,12 @@
     </tr>
     </div>
     {{/each}}
+  </script>
+  <script>
+    mach_submit.addEventListener('click', function() {
+      MaCH=$('#MaCH1').val();
+      fetchTable(0,MaCH); 
+    });
   </script>
   <script>
     btnSaveAdd.addEventListener('click',() => {

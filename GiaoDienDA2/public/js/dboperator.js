@@ -248,6 +248,19 @@ async function getProductAdmin(start,num=100){
     }
 }
 
+async function getProductAdminStore(start,MaCH,num=100){
+    try{
+        let pool=await sql.connect(config);
+        length = await pool.request().query("SELECT COUNT(*) FROM CH_SP where CH_SP.MaCH='"+MaCH+"'")
+        let products=await pool.request().query("SELECT * \
+         FROM (SELECT ROW_NUMBER() OVER (ORDER BY CH_SP.MaSP) AS ROWNUMBER,  SanPham.* FROM CH_SP join SanPham on CH_SP.MaSP=SanPham.MaSP where CH_SP.MaCH='"+MaCH+"')  AS T WHERE T.ROWNUMBER >= "+start+" AND T.ROWNUMBER <" + (parseInt(start)+parseInt(num)));
+        return {tableLength: length.recordsets[0][0][""], data: products.recordsets[0]};
+    }
+    catch(error){
+        return error;
+    }
+}
+
 async function addProduct(dkn){
     try{
         console.log("dbo:",dkn)
@@ -310,5 +323,6 @@ module.exports={
     getProductAdmin:getProductAdmin,
     addProduct:addProduct,
     addProductToAgent:addProductToAgent,
-    getProductDetail:getProductDetail
+    getProductDetail:getProductDetail,
+    getProductAdminStore:getProductAdminStore
 }

@@ -278,15 +278,24 @@ app.get('/AddProduct', (req, res) => {
 })
 app.post('/AddProduct', (req, res) => {
     let start = (req.body['start'])
+    let mach = (req.body['MaCH'])
     //res.json(start)
     if (!start || start<0)
     {
         start = 0
     }
-    dboperator.getProductAdmin(start).then(result => {
-        console.log(result)
-        res.json(result);
-    })
+    if (mach==""){
+        dboperator.getProductAdmin(start).then(result => {
+            console.log(result)
+            res.json(result);
+        })
+    }
+    else{
+        dboperator.getProductAdminStore(start,mach).then(result => {
+            console.log(result)
+            res.json(result);
+        })
+    }
 })
 
 //Add Product
