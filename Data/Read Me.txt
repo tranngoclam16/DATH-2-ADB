@@ -1,0 +1,2 @@
+Chạy scripts trong link drive: https://drive.google.com/drive/u/2/folders/1gkKIPfP5CUZMBBxhmEDQnGc280Q2kiF6
+Chạy file UpdateData.sql
