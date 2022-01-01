@@ -14,10 +14,15 @@ BEGIN
 				WHERE CTDH.MaSP = SP.MaSP)
 	WHERE EXISTS(SELECT * from INSERTED I WHERE I.MaDH = CTDH.MaDH)
 
+	DECLARE @dongia int, @giamgia int
 	UPDATE CTDH
-	SET DonGia = (SELECT SP.DonGia
+	SET @dongia = (SELECT SP.DonGia
 				from SanPham SP
-				WHERE CTDH.MaSP = SP.MaSP)
+				WHERE CTDH.MaSP = SP.MaSP),
+		@giamgia = (SELECT SP.GiamGia
+				from SanPham SP
+				WHERE CTDH.MaSP = SP.MaSP),
+		DonGia = @dongia - @giamgia
 	WHERE EXISTS(SELECT * from INSERTED I WHERE I.MaDH = CTDH.MaDH)
 END
 GO
@@ -32,6 +37,7 @@ BEGIN
 
 	UPDATE CTDH
 	SET ThanhTien = DonGia * SoLuong
+	WHERE EXISTS(SELECT * from INSERTED I WHERE I.MaDH = CTDH.MaDH)
 
 	UPDATE DonHang
 	SET TongTien = (SELECT SUM(CTDH.ThanhTien)
