@@ -69,18 +69,18 @@ AS
 BEGIN
 	BEGIN TRAN
 		BEGIN TRY
-			declare @TichLuy int, @ChietKhau int
-			 select @ChietKhau = case
-				when LoaiThe = 4 then 1
-				when LoaiThe = 5 then 3
-				when LoaiThe = 6 then 5
+			declare @TichLuy int
+			 select @TichLuy = case
+				when LoaiThe = 1 then 1
+				when LoaiThe = 2 then 3
+				when LoaiThe = 3 then 5
 				end
 			from KhachHang
 			where SDT = @MaKH
 
-			set @TichLuy = @TongTien / 100 * @ChietKhau
+			
 			INSERT INTO DonHang (MaKH, NgayLap, MaTT, TongTien, ChietKhau, TichLuy, LoaiDH) 
-			VALUES (@MaKH, getDate(),@ThanhToan, @TongTien, @ChietKhau, @TichLuy, 2)
+			VALUES (@MaKH, getDate(),@ThanhToan, @TongTien, 0, @TichLuy, 2)
 
 			insert into PhieuGiaoHang (MaDH, NguoiNhan, SDT, DiaChi, Phuong, Quan, ThanhPho, TienHang, PhiVanChuyen)
 			Values(@MaDonHang, @TenNguoiNhan, @SDT, @DiaChi, @Phuong, @Quan, @Tinh, @TongTien, @TongTien /100 *5)
