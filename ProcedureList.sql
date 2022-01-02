@@ -54,7 +54,7 @@ create procedure getStoreStatisticByDay
 	@bd date,
 	@kt date,
 	@mach varchar(8),
-	@doanhthu float output,
+	@doanhthu bigint output,
 	@sldaban int output,
 	@tong int output
 as
@@ -119,7 +119,7 @@ GO
 create procedure getStoreStatisticALL
 	@bd date,
 	@kt date,
-	@doanhthu float output,
+	@doanhthu bigint output,
 	@sldaban int output
 as
 BEGIN
