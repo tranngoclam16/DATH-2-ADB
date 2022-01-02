@@ -48,6 +48,40 @@ BEGIN
 END
 GO
 
+ALTER TRIGGER SLDaBan_SP on CTDH
+for INSERT, UPDATE, DELETE
+as
+BEGIN
+	IF TRIGGER_NESTLEVEL() > 1
+		RETURN
+
+	DECLARE @sl int, @masp bigint, @sldb int
+
+	IF EXISTS (SELECT 0 FROM inserted)
+	Begin
+		SET @sl = (SELECT SoLuong from INSERTED)
+		SET @masp = (SELECT SP.MaSP from INSERTED I join SanPham SP on I.MaSP = SP.MaSP)
+		SET @sldb = (SELECT SLDaBan from SanPham WHERE SanPham.MaSP = @masp) 
+
+		UPDATE SanPham
+		Set SLDaBan = @sldb + @sl
+		WHERE EXISTS(SELECT * from INSERTED I WHERE I.MaSP = SanPham.MaSP)
+	End
+
+	ELSE
+	Begin
+		SET @sl = (SELECT SoLuong from DELETED)
+		SET @masp = (SELECT SP.MaSP from DELETED D join SanPham SP on D.MaSP = SP.MaSP)
+		SET @sldb = (SELECT SLDaBan from SanPham WHERE SanPham.MaSP = @masp) 
+
+		UPDATE SanPham
+		Set SLDaBan = @sldb - @sl
+		WHERE EXISTS(SELECT * from DELETED D WHERE D.MaSP = SanPham.MaSP)
+
+	End
+END
+GO
+
 CREATE TRIGGER TichLuy_DH on DonHang
 for INSERT
 as
