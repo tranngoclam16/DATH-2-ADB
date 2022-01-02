@@ -168,7 +168,7 @@ const setupEnvents = ()=>{
                 totalBill -= cost*1000;
                 price[i].innerHTML = parseFloat(item.innerHTML)*cost*1000
                 updateBill()
-                product[i].item = parseInt(item.innerHTML);
+                product[i].item = parseFloat(item.innerHTML);
                 sessionStorage.products = JSON.stringify(product);
             }
         })
@@ -179,7 +179,7 @@ const setupEnvents = ()=>{
                 totalBill += cost*1000;
                 price[i].innerHTML = parseFloat(item.innerHTML)*cost*1000
                 updateBill();
-                product[i].item = parseInt(item.innerHTML);
+                product[i].item = parseFloat(item.innerHTML);
                 sessionStorage.products = JSON.stringify(product);
             }
         })
@@ -187,7 +187,7 @@ const setupEnvents = ()=>{
 
     deleteBtn.forEach((item, i) =>{
         item.addEventListener('click', ()=>{
-            product = product.fliter((data, index) => index != i)
+            product = product.filter((data, index) => index != i)
             sessionStorage.product = JSON.stringify(product)
             location.reload()
         })
