@@ -102,13 +102,7 @@ app.post('/addOrder',(req,res)=>{
      dboperator.addBill(bill).then(result => {
        // sessionStorage['notify'] = sessionStorage['notify'] ? sessionStorage['notify'] : ""
        console.log(result)
-       if(result==1)
-        res.json('Đặt hàng thành công.');
-       else if (result==2)
-        res.json('Số lượng đặt vượt quá số lượng trong kho');
-        else res.json('Lỗi');
-        /* console.log(result)
-        res.json(result); */
+       res.json(result)
      }) 
  })
 /*--------------------------------KHÁCH HÀNG-------------------------------------*/
