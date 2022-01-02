@@ -1,0 +1,33 @@
+body{
+    display: block;
+    background: #fff;
+}
+
+.form{
+    width: 100%;
+    padding: 20px 10vw;
+}
+
+.heading{
+    text-transform: capitalize;
+    font-size: 500;
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+input:not(.search-box, .check-out, input[type="file"]),
+textarea{
+    display: block;
+    width: 300px;
+    height: 40px;
+    padding: 20px;
+    border-radius: 5px;
+    background: #fff;
+    border: none;
+    outline: none;
+    margin: 20px none;
+}
+.form input{
+    background: #f5f5f5 !important;
+    width: 100% !important;
+}

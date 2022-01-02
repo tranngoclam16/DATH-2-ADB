@@ -35,21 +35,44 @@ window.onload = () => {
     }
 }
 
-const addToCart = (product) => {
+/* const cartBtn = document.querySelector('#cartBtn')
+cartBtn.addEventListener('click', ()=>{
+    let product = {
+        MaSP: cartBtn.getAttribute('data-id'),
+        TenSP: cartBtn.getAttribute('data-name'),
+        DonGia: cartBtn.getAttribute('data-price')
+    }
+    addToCart(product)
+    
+}) */
+
+const cartBtn = (e) => {
+    let product = {
+       /*  MaSP: $(e).data('id'),     
+        TenSP: $(e).data('name'),
+        DonGia: $(e).data('price') */
+        item: 1,
+        MaSP: e.getAttribute('data-id'),
+        TenSP: decodeURIComponent(e.getAttribute('data-name')),
+        DonGia: e.getAttribute('data-price')
+    }
         let user = JSON.parse(sessionStorage.user)
         user = user.MaKH
         //sessionStorage.setItem(user,JSON.stringify(products))
-        let data = JSON.parse(sessionStorage.getItem(user));
+        let data = sessionStorage.products;
+        //console.log(data)
+        let temp = []
         if (data == null){
-            data = []
+            temp =[]
         }
+        else temp = JSON.parse(data)
 
-        product = {
+        /* product = {
             item: 1,
             MaSP: product.MaSP,
             TenSP: product.TenSP,
-            DonGia: product.DonGia,
-            GiamGia: product.GiamGia
-        }
-        data.push(product)
+            DonGia: product.DonGia
+        } */
+        temp.push(product)
+        sessionStorage.products=JSON.stringify(temp)
 }

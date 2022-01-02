@@ -149,7 +149,7 @@ function fetchData (value) {
                             </span>
                         </div>
                         <div>
-                            <button class="btn-flat btn-hover" id="cartBtn">add to cart</button>
+                            <button class="btn-flat btn-hover" id="cartBtn" data-id=${e.MaSP} data-name="`+encodeURIComponent(e.TenSP)+`" data-price=${e.GiamGia}>add to cart</button>
                         </div>
                         `
                     product_info.insertAdjacentHTML("beforeend", prod)

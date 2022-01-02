@@ -304,6 +304,58 @@ async function getProductDetail(id){
     }
 }
 
+async function addBill(bill){
+    //var flag=1
+    try{
+        console.log("bill:", bill)
+        let flag = 1
+        let pool = await sql.connect(config);
+        let insertBill = await pool.request()
+        .input('MaKH', sql.VarChar(10), bill.makh)
+        .input('DiaChi', sql.NVarChar(30), bill.address)
+        .input('Phuong', sql.NVarChar(30), bill.ward)
+        .input('Quan', sql.NVarChar(30), bill.district)
+        .input('Tinh', sql.NVarChar(30), bill.city)
+        .input('TenNguoiNhan', sql.NVarChar(100), bill.name)
+        .input('SDT', sql.VarChar(10), bill.sdt)
+        .input('TongTien', sql.Float, bill.total)
+        .input('ThanhToan', sql.Int, bill.payment)
+        .output('MaDonHang')
+        .execute('sp_ThemDonHang')
+        MaDH=insertBill.output.MaDonHang;
+        console.log('MaDH:',MaDH)
+        let temp = bill.products
+        console.log(temp)
+            for (i=0;i<temp.length;i++){
+                   // console.log('sp: ',MaSP)
+                let insertP= await pool.request()
+                .input('MaDH',sql.Int,MaDH)
+                .input('MaSP',sql.VarChar(6),temp[i].MaSP)
+                .input('SoLuong',sql.Int,temp[i].item)
+                .input('Quan', sql.NVarChar(30), bill.district)
+                .output('error',sql.Int)
+                .execute('sp_ThemChiTietDonHang')
+                flag = insertP.output.error
+                    //console.log(insertP.output.error)
+                if (insertP.output.error==2){
+                    let pool1 = await sql.connect(config);
+                    console.log('out of stock');
+                    let de=await pool1.request()
+                    .input('MaDH',sql.Int,MaDH)
+                    .execute('sp_XoaDonHang')
+                    //return 'Số lượng đặt vượt quá số lượng trong kho'
+                    return 2
+                    break;
+                } 
+            }
+        //console.log(insertBill.output.MaDonHang)
+        return 1
+    }
+    catch(error){
+        console.log(error);
+    }
+    //return flag
+}
 
 
 module.exports={
@@ -324,5 +376,6 @@ module.exports={
     addProduct:addProduct,
     addProductToAgent:addProductToAgent,
     getProductDetail:getProductDetail,
-    getProductAdminStore:getProductAdminStore
+    getProductAdminStore:getProductAdminStore,
+    addBill:addBill
 }

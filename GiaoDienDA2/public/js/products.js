@@ -34,7 +34,7 @@ function fetchProductList (value) {
                                 <div class="product-card-info">
                                     <div class="product-btn">
                                         <a href="/ProductDetail/${e.MaSP}" class="btn-flat btn-hover btn-shop-now">detail</a>
-                                        <button class="btn-flat btn-hover btn-cart-add" id="cartBtn">
+                                        <button class="btn-flat btn-hover btn-cart-add" onclick="cartBtn(this)" data-id=${e.MaSP} data-name="`+encodeURIComponent(e.TenSP)+`" data-price=${e.DonGia}>
                                             <i class='bx bxs-cart-add'></i>
                                         </button>
                                         <button class="btn-flat btn-hover btn-cart-add">
@@ -64,7 +64,7 @@ function fetchProductList (value) {
                             <div class="product-card-info">
                                 <div class="product-btn">
                                     <a href="/ProductDetail/${e.MaSP}" class="btn-flat btn-hover btn-shop-now">detail</a>
-                                    <button class="btn-flat btn-hover btn-cart-add" id="cartBtn">
+                                    <button class="btn-flat btn-hover btn-cart-add" onclick="cartBtn(this)" data-id=${e.MaSP} data-name="`+encodeURIComponent(e.TenSP)+`" data-price=${e.GiamGia}>
                                         <i class='bx bxs-cart-add'></i>
                                     </button>
                                     <button class="btn-flat btn-hover btn-cart-add">
@@ -125,7 +125,7 @@ function fetchFilteredProduct (value, LH, TH) {
                                 <div class="product-card-info">
                                     <div class="product-btn">
                                         <a href="/ProductDetail/${e.MaSP}" class="btn-flat btn-hover btn-shop-now">detail</a>
-                                        <button class="btn-flat btn-hover btn-cart-add" id="cartBtn">
+                                        <button class="btn-flat btn-hover btn-cart-add" onclick="cartBtn(this)" data-id="${e.MaSP}" data-name="`+encodeURIComponent(e.TenSP)+`" data-price="${e.DonGia}">
                                             <i class='bx bxs-cart-add'></i>
                                         </button>
                                         <button class="btn-flat btn-hover btn-cart-add">
@@ -155,7 +155,7 @@ function fetchFilteredProduct (value, LH, TH) {
                             <div class="product-card-info">
                                 <div class="product-btn">
                                     <a href="/ProductDetail/${e.MaSP}" class="btn-flat btn-hover btn-shop-now">detail</a>
-                                    <button class="btn-flat btn-hover btn-cart-add" id="cartBtn">
+                                    <button class="btn-flat btn-hover btn-cart-add" onclick="cartBtn(this)" data-id="${e.MaSP}" data-name="`+encodeURIComponent(e.TenSP)+`" data-price="${e.GiamGia}">
                                         <i class='bx bxs-cart-add'></i>
                                     </button>
                                     <button class="btn-flat btn-hover btn-cart-add">
@@ -216,7 +216,7 @@ function BrandList () {
   })
     .then(res => {
         res.json().then(data =>{
-            console.log(data)
+            //console.log(data)
             data.forEach(e => {
                 let prod = `
                 <li>

@@ -34,7 +34,7 @@ function fetchProductList (value) {
                                 <div class="product-card-info">
                                     <div class="product-btn">
                                         <a href="/ProductDetail/${e.MaSP}" class="btn-flat btn-hover btn-shop-now">shop now</a>
-                                        <button class="btn-flat btn-hover btn-cart-add" id="cartBtn">
+                                        <button class="btn-flat btn-hover btn-cart-add" id="cartBtn" data-id=${e.MaSP} data-name="`+encodeURIComponent(e.TenSP)+`" data-price=${e.DonGia}>
                                             <i class='bx bxs-cart-add'></i>
                                         </button>
                                         <button class="btn-flat btn-hover btn-cart-add">
@@ -63,8 +63,8 @@ function fetchProductList (value) {
                             </div>
                             <div class="product-card-info">
                                 <div class="product-btn">
-                                    <a href="./product-detail.html" class="btn-flat btn-hover btn-shop-now">shop now</a>
-                                    <button class="btn-flat btn-hover btn-cart-add" id="cartBtn">
+                                    <a href="/ProductDetail/${e.MaSP}" class="btn-flat btn-hover btn-shop-now">shop now</a>
+                                    <button class="btn-flat btn-hover btn-cart-add" id="cartBtn" data-id=${e.MaSP} data-name="`+encodeURIComponent(e.TenSP)+`" data-price=${e.GiamGia}>
                                         <i class='bx bxs-cart-add'></i>
                                     </button>
                                     <button class="btn-flat btn-hover btn-cart-add">
@@ -125,7 +125,7 @@ function fetchFilteredProduct (value, LH, TH) {
                                 <div class="product-card-info">
                                     <div class="product-btn">
                                         <a href="/ProductDetail/${e.MaSP}" class="btn-flat btn-hover btn-shop-now">shop now</a>
-                                        <button class="btn-flat btn-hover btn-cart-add" id="cartBtn">
+                                        <button class="btn-flat btn-hover btn-cart-add" id="cartBtn" data-id=${e.MaSP} data-name="`+encodeURIComponent(e.TenSP)+`" data-price=${e.DonGia}>
                                             <i class='bx bxs-cart-add'></i>
                                         </button>
                                         <button class="btn-flat btn-hover btn-cart-add">
@@ -154,8 +154,8 @@ function fetchFilteredProduct (value, LH, TH) {
                             </div>
                             <div class="product-card-info">
                                 <div class="product-btn">
-                                    <a href="./product-detail.html" class="btn-flat btn-hover btn-shop-now">shop now</a>
-                                    <button class="btn-flat btn-hover btn-cart-add" id="cartBtn">
+                                    <a href="/ProductDetail/${e.MaSP}" class="btn-flat btn-hover btn-shop-now">shop now</a>
+                                    <button class="btn-flat btn-hover btn-cart-add" id="cartBtn" data-id=${e.MaSP} data-name="`+encodeURIComponent(e.TenSP)+`" data-price=${e.GiamGia}>
                                         <i class='bx bxs-cart-add'></i>
                                     </button>
                                     <button class="btn-flat btn-hover btn-cart-add">

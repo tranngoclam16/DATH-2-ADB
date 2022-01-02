@@ -87,6 +87,30 @@ app.post('/ProductDetail', (req, res) => {
     })
 })
 
+app.get('/Cart', (req, res) => {
+    res.sendFile(path.join(staticPath,"cart.html"));
+})
+
+app.get('/CheckOut', (req, res) => {
+    res.sendFile(path.join(staticPath,"checkout.html"));
+})
+
+app.post('/addOrder',(req,res)=>{
+    let bill = {...req.body};
+    /* console.log("body")
+    console.log(req.body) */
+     dboperator.addBill(bill).then(result => {
+       // sessionStorage['notify'] = sessionStorage['notify'] ? sessionStorage['notify'] : ""
+       console.log(result)
+       if(result==1)
+        res.json('Đặt hàng thành công.');
+       else if (result==2)
+        res.json('Số lượng đặt vượt quá số lượng trong kho');
+        else res.json('Lỗi');
+        /* console.log(result)
+        res.json(result); */
+     }) 
+ })
 /*--------------------------------KHÁCH HÀNG-------------------------------------*/
 app.get('/LogInKH', (req, res) => {
     res.sendFile(path.join(staticPath,"login.html"));
