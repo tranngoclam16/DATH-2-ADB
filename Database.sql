@@ -115,15 +115,14 @@ create table DonHang (
    MaNV                 varchar(8),
    MaCH                 varchar(8),
    MaKH 	            varchar(10),
-   NgayLap              datetime, INDEX cdx NONCLUSTERED ON PScheme_NL(NgayLap),
+   NgayLap              datetime INDEX cdx NONCLUSTERED ON PScheme_NL(NgayLap),
    MaTT					int,
    MaTinhTrang			int,
    SoThe                varchar(20),
-   TongTien             int,
+   TongTien             bigint,
    ChietKhau            int,
    LoaiDH				int, --1:offline, 2:online
    TichLuy				int,
-   --constraint PK_DONHANG primary key (MaDH)
 )
 go
 /*
