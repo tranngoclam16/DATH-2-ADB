@@ -46,57 +46,71 @@ showSlide()
 
 // render products
 
-let products = [
+let products =[
     {
-        name: 'JBL E55BT KEY BLACK',
-        image1: './images/JBL_E55BT_KEY_BLACK_6175_FS_x1-1605x1605px.png',
-        image2: './images/JBL_LIVE650BTNC_Product Image_Folded_Black.webp',
-        old_price: '400',
-        curr_price: '300'
+      ROWNUMBER: 1,
+      MaSP: 0,
+      TenSP: 'Bộ lau nhà thông minh',
+      DonGia: '1249000.00',
+      GiamGia: '187350.00'
     },
     {
-        name: 'JBL JR 310BT',
-        image1: './images/JBL_JR 310BT_Product Image_Hero_Skyblue.png',
-        image2: './images/JBL_JR 310BT_Product Image_Detail_Skyblue.png',
-        old_price: '400',
-        curr_price: '300'
+      ROWNUMBER: 2,
+      MaSP: 1,
+      TenSP: 'Thùng sữa tươi tiệt trùng ít đường 200ml',
+      DonGia: '1309000.00',
+      GiamGia: '196350.00'
     },
     {
-        name: 'JBL TUNE 750BTNC',
-        image1: './images/kisspng-beats-electronics-headphones-apple-beats-studio-red-headphones.png',
-        image2: './images/JBL_E55BT_KEY_RED_6063_FS_x1-1605x1605px.webp',
-        old_price: '400',
-        curr_price: '300'
+      ROWNUMBER: 3,
+      MaSP: 2,
+      TenSP: 'Giỏ xách quai đựng quần áo',
+      DonGia: '1679000.00',
+      GiamGia: '251850.00'
     },
     {
-        name: 'JBL Horizon',
-        image1: './images/JBLHorizon_001_dvHAMaster.png',
-        image2: './images/JBLHorizon_BLK_002_dvHAMaster.webp',
-        old_price: '400',
-        curr_price: '300'
+      ROWNUMBER: 4,
+      MaSP: 3,
+      TenSP: 'Cháo tươi Cá lóc',
+      DonGia: '969000.00',
+      GiamGia: '145350.00'
     },
     {
-        name: 'JBL Tune 220TWS',
-        image1: './images/JBL_TUNE220TWS_ProductImage_Pink_ChargingCaseOpen.png',
-        image2: './images/JBL_TUNE220TWS_ProductImage_Pink_Back.png',
-        old_price: '400',
-        curr_price: '300'
+      ROWNUMBER: 5,
+      MaSP: 5,
+      TenSP: 'Combo 3 gói Bỉm tã dán 18 miếng (S, 4-8kg)',
+      DonGia: '1319000.00',
+      GiamGia: '197850.00'
     },
     {
-        name: 'UA Project Rock',
-        image1: './images/190402_E1_FW19_EarbudsWCase_S13_0033-1_1605x1605_HERO.png',
-        image2: './images/190402_E1_FW19_EarbudsWCase_S13_0033-1_1605x1605_BACK.png',
-        old_price: '400',
-        curr_price: '300'
+      ROWNUMBER: 6,
+      MaSP: 6,
+      TenSP: 'Sữa đậu đen, óc chó hạnh nhân',
+      DonGia: '1919000.00',
+      GiamGia: '287850.00'
     },
     {
-        name: 'JBL Endurance SPRINT',
-        image1: './images/JBL_Endurance-SPRINT_Product-Image_Red_front-1605x1605px.webp',
-        image2: './images/JBL-Endurance-Sprint_Alt_Red-1605x1605px.webp',
-        old_price: '400',
-        curr_price: '300'
+      ROWNUMBER: 7,
+      MaSP: 7,
+      TenSP: 'Giá phơi khô bình sữa',
+      DonGia: '939000.00',
+      GiamGia: '140850.00'
     },
-]
+    {
+      ROWNUMBER: 8,
+      MaSP: 8,
+      TenSP: 'Quần áo mặc nhà họa tiết oto 12-18M',
+      DonGia: '249000.00',
+      GiamGia: '37350.00'
+    },
+    {
+      ROWNUMBER: 9,
+      MaSP: 9,
+      TenSP: 'Combo 2 Thực phẩm bổ sung bánh xốp ăn dặm vị phô mai',
+      DonGia: '99000.00',
+      GiamGia: '14850.00'
+    }
+  ]
 
 let product_list = document.querySelector('#latest-products')
 let best_product_list = document.querySelector('#best-products')
@@ -120,11 +134,11 @@ products.forEach(e => {
                         </button>
                     </div>
                     <div class="product-card-name">
-                        ${e.name}
+                        ${e.TenSP}
                     </div>
                     <div class="product-card-price">
-                        <span><del>${e.old_price}</del></span>
-                        <span class="curr-price">${e.curr_price}</span>
+                        <span><del>${e.DonGia}</del></span>
+                        <span class="curr-price">${parseFloat(e.DonGia)-parseFloat(e.GiamGia)}</span>
                     </div>
                 </div>
             </div>

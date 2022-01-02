@@ -2,7 +2,7 @@
 GO
 
 --Tạo tài khoản khách hàng
-CREATE PROC sp_CreateAccount_KH
+create PROC sp_CreateAccount_KH
 	@HoTen nvarchar(100),
 	@SDT varchar(10),
 	@GioiTinh varchar(3),
@@ -14,7 +14,7 @@ AS
 BEGIN
 	BEGIN TRANSACTION
 		BEGIN TRY
-			INSERT INTO KhachHang VALUES (@HoTen,@SDT,1,@GioiTinh,@NgaySinh,@DiaChi,@Email,@pword,0); 
+			INSERT INTO KhachHang VALUES (@HoTen,@SDT,1,@GioiTinh,@NgaySinh,@DiaChi,@Email,@pword, 0); 
 		COMMIT TRANSACTION
 		END TRY
 		BEGIN CATCH

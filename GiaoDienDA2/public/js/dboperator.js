@@ -337,19 +337,19 @@ async function addBill(bill){
                 .execute('sp_ThemChiTietDonHang')
                 flag = insertP.output.error
                     //console.log(insertP.output.error)
-                if (insertP.output.error==2){
+                if (insertP.output.error!=0){
                     let pool1 = await sql.connect(config);
                     console.log('out of stock');
                     let de=await pool1.request()
                     .input('MaDH',sql.Int,MaDH)
                     .execute('sp_XoaDonHang')
-                    //return 'Số lượng đặt vượt quá số lượng trong kho'
-                    return 2
-                    break;
+                    if (insertP.output.error==2)
+                        return 'Sản phẩm '+ temp[i].TenSP+ ' đặt vượt quá số lượng trong kho tại cửa hàng gần nhất'
+                    else return 'Sản phẩm '+ temp[i].TenSP+ ' đã hết hàng tại cửa hàng gần nhất'
                 } 
             }
         //console.log(insertBill.output.MaDonHang)
-        return 1
+        return 'Đặt hàng thành công'
     }
     catch(error){
         console.log(error);

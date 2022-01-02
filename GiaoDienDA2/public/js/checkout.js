@@ -31,8 +31,15 @@ placeOderBtn.addEventListener('click', ()=>{
             credentials: 'include',
             body: JSON.stringify(objToPost)
         }).then(res =>{
-            res.json.then(data =>{
-                console.log(data)
+            res.json().then(data =>{
+                if(data=='Đặt hàng thành công'){
+                               alert(data)
+                sessionStorage.removeItem('products')
+                location.replace('/')
+                }
+                else{
+                    alert(data)
+                }
             })
         })
     }

@@ -7,7 +7,7 @@ as
 begin
 
 	SELECT * 
-	FROM (SELECT ROW_NUMBER() OVER (ORDER BY SP.MaSP) AS ROWNUMBER,SP.MaSP, SP.TenSP, convert(varchar,cast(DonGia as money), 1) as DonGia, convert(varchar,cast(GiamGia as money), 1) as GiamGia 
+	FROM (SELECT ROW_NUMBER() OVER (ORDER BY SP.MaSP) AS ROWNUMBER,SP.MaSP, SP.TenSP, convert(varchar,cast(DonGia as money), 1) as DonGia, convert(varchar,cast(DonGia-GiamGia as money), 1) as GiamGia 
          FROM SanPham SP 
 		 where charindex(@search, TenSP) !=0)  AS T 
 	WHERE T.ROWNUMBER >= @start AND T.ROWNUMBER < (@start+@num)
@@ -21,7 +21,7 @@ begin
 	if (@lh != '')
 	begin
 		SELECT * 
-		FROM (SELECT ROW_NUMBER() OVER (ORDER BY SP.MaSP) AS ROWNUMBER, MaSP, TenSP, convert(varchar,cast(DonGia as money), 1) as DonGia, convert(varchar,cast(GiamGia as money), 1) as GiamGia
+		FROM (SELECT ROW_NUMBER() OVER (ORDER BY SP.MaSP) AS ROWNUMBER, MaSP, TenSP, convert(varchar,cast(DonGia as money), 1) as DonGia, convert(varchar,cast(DonGia-GiamGia as money), 1) as GiamGia
 			FROM SanPham SP 
 			WHERE CHARINDEX(cast(MaLoai as varchar(10)), @lh) > 0 and charindex(@search, TenSP) !=0)  AS T 
 		WHERE T.ROWNUMBER >= @start AND T.ROWNUMBER <= (@start+@num)
@@ -29,7 +29,7 @@ begin
 	else if (@th != '')
 	begin
 		SELECT * 
-		FROM (SELECT ROW_NUMBER() OVER (ORDER BY SP.MaSP) AS ROWNUMBER, MaSP, TenSP, convert(varchar,cast(DonGia as money), 1) as DonGia, convert(varchar,cast(GiamGia as money), 1) as GiamGia
+		FROM (SELECT ROW_NUMBER() OVER (ORDER BY SP.MaSP) AS ROWNUMBER, MaSP, TenSP, convert(varchar,cast(DonGia as money), 1) as DonGia, convert(varchar,cast(DonGia-GiamGia as money), 1) as GiamGia
 			FROM SanPham SP 
 			WHERE CHARINDEX(cast(MaLoai as varchar(10)), @th) > 0 and charindex(@search, TenSP) !=0)  AS T 
 		WHERE T.ROWNUMBER > @start AND T.ROWNUMBER < (@start+@num)
@@ -37,7 +37,7 @@ begin
 	else
 	begin
 		SELECT * 
-		FROM (SELECT ROW_NUMBER() OVER (ORDER BY SP.MaSP) AS ROWNUMBER, MaSP, TenSP, convert(varchar,cast(DonGia as money), 1) as DonGia, convert(varchar,cast(GiamGia as money), 1) as GiamGia
+		FROM (SELECT ROW_NUMBER() OVER (ORDER BY SP.MaSP) AS ROWNUMBER, MaSP, TenSP, convert(varchar,cast(DonGia as money), 1) as DonGia, convert(varchar,cast(DonGia-GiamGia as money), 1) as GiamGia
 			FROM SanPham SP 
 			WHERE CHARINDEX(cast(MaLoai as varchar(10)), @lh) > 0 or CHARINDEX(cast(MaLoai as varchar(10)), @lh) > 0 and charindex(@search, TenSP) !=0)  AS T 
 		WHERE T.ROWNUMBER > @start AND T.ROWNUMBER <= (@start+@num)
@@ -45,16 +45,16 @@ begin
 end
 go
 
-alter proc getProductDetail (@masp int)
+create proc getProductDetail (@masp int)
 as
 begin
-	select TenSP, DonGia, GiamGia, TH.Ten as TenTH
+	select TenSP, DonGia, convert(varchar,cast(DonGia-GiamGia as money), 1) as GiamGia, TH.Ten as TenTH
 	from SanPham SP join ThuongHieu TH on SP.MaTH = TH.MaTH
 	where SP.MaSP = @masp
 end
 go
 
-alter PROCEDURE sp_ThemDonHang
+create PROCEDURE sp_ThemDonHang
 	@MaKH varchar(10),
 	@DiaChi nvarchar(30),
 	@Phuong nvarchar(30),
@@ -105,7 +105,9 @@ declare @s int
 exec sp_ThemDonHang '0930000000', '5', '5', '5', '5', '5', '5', 19, 1, @MaDonHang = @s output
 select @s
 
-alter PROCEDURE sp_ThemChiTietDonHang
+go
+
+create PROCEDURE sp_ThemChiTietDonHang
 	(@MaDH int,
 	@MaSP varchar(6),
 	@SoLuong int,
@@ -113,39 +115,28 @@ alter PROCEDURE sp_ThemChiTietDonHang
 	@error int output)
 AS
 BEGIN 
-	BEGIN TRAN
 		BEGIN TRY
 			if not exists (select * from DonHang where @MaDH= MaDH)
 				begin
 					print('1')
 					raiserror(N'Không tồn tại đơn hàng',15,1)
 				end
-
-			if not exists (select * from CH_SP where MaSP=@MaSP and MaCH = @ch)
-				begin
-					set @error=2
-					return
-				end
 			declare @sl int, @ch varchar(10)
 			set @ch = (select top 1 MaCH
 			from CuaHang
 			where Quan = @Quan)
+			if not exists (select * from CH_SP where MaSP=@MaSP and MaCH = @ch)
+				begin
+					set @error=3
+					return
+				end
 			set @sl=(select SoLuongTon from CH_SP where MaSP=@MaSP and MaCH = @ch)
 			print(@sl)
 			if (@sl-@SoLuong>=0)
 			begin
-				if EXISTS (select * from CTDH where MaDH = @MaDH and MaSP = @MaSP)
-					begin
-						
-						update CTDH
-						set SoLuong = (SoLuong + @SoLuong)
-						where MaDH = @MaDH and MaSP = @MaSP
-					end
-				else
-					begin
-						
-						INSERT INTO CTDH(MaDH,MaSP,SoLuong) VALUES(@MaDH,@MaSP,@SoLuong)
-					end
+					INSERT INTO CTDH(MaDH,MaSP,SoLuong) VALUES(@MaDH,@MaSP,@SoLuong)
+					set @error=0
+					return
 			end
 			else
 			begin
@@ -153,18 +144,16 @@ BEGIN
 				set @error=2
 				raiserror(N'Số lượng đặt vượt quá số lượng trong kho',15,1)
 			end
-		COMMIT TRAN
 		END TRY
 		BEGIN CATCH
 			IF @@trancount>0
 				BEGIN	
 					print(N'Lỗi')
-					ROLLBACK TRANSACTION 
 				END
 		END CATCH
 END
 go
-alter PROCEDURE sp_XoaDonHang
+create PROCEDURE sp_XoaDonHang
 	(@MaDH int)
 AS
 BEGIN
