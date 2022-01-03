@@ -186,9 +186,12 @@ const setupEnvents = ()=>{
     })
 
     deleteBtn.forEach((item, i) =>{
+        console.log(item)
+        console.log(i)
         item.addEventListener('click', ()=>{
+            
             product = product.filter((data, index) => index != i)
-            sessionStorage.product = JSON.stringify(product)
+            sessionStorage.products = JSON.stringify(product)
             location.reload()
         })
     })
